@@ -53,7 +53,7 @@ https://speakerdeck.com/nabeo/henriniokeruke-guan-ce-xing-huo-de-henoqu-rizu-mi
 
 
 ## 最後に
-Cloud Native Days Fukuoka 2023 で otel meetup したいと思っているんだよね的な話を聞いて、第一回目で登壇機会いただけるとは思ってなかったので、企画の katzchang さん、ymotongpoo さんには大変感謝です。
+Cloud Native Days Fukuoka 2023 の二次会で otel meetup したいと思っているんだよね的な話を主催の方々に聞いて、第一回目で登壇機会いただけるとは思ってなかったので、企画の katzchang さん、ymotongpoo さんには大変感謝です。
 
 懇親会でも多くの Otel 強者の方とお話しでき、実践エピソードも教えていただいたので、次回の otel meetup も盛り上が機運を感じています。楽しみです！
 
