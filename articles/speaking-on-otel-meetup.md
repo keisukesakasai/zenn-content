@@ -46,22 +46,22 @@ https://speakerdeck.com/ymotongpoo/opentelemetry-in-last-4-plus-years
 [@nabeo](https://twitter.com/nabeo) さんの [ヘンリーにおける可観測性獲得への取り組み](https://speakerdeck.com/nabeo/henriniokeruke-guan-ce-xing-huo-de-henoqu-rizu-mi)は、Otel Collector 導入に向けた諸々の検討、コスト面からアーキテクチャまでを詳細に解説していただきとても参考になりました。また、冒頭説明いただいた複雑な業務要件よりシステムも複雑化し、オブザーバビリティが重要という点も説得力があり、自分としても共感が大きかったです。今回 PoC を経て、これから実践投入とのことだったので、今後事例も多く共有してくださる(?!)ことが楽しみです。Otel Collector の現場ノウハウはまだあまり流通してないと思うので、とても勉強になりました。我々もやっていきたいというモチベーションになりました。
 https://speakerdeck.com/nabeo/henriniokeruke-guan-ce-xing-huo-de-henoqu-rizu-mi
 
-## X での感想など
-事例紹介ネタでの登壇初めてだったので、直前まで「この知見は共有の価値あるな」と「これ聞いて何になるねん？」の情緒を行き来してました。X でのポジティブな反応は励みになりました。
-
-https://x.com/taka2noda/status/1714955366868582899?s=20
-
-https://x.com/paper2parasol/status/1714959280808587594?s=20
-
-https://x.com/mochizuki875/status/1714959530852032620?s=20
-
-https://x.com/ymotongpoo/status/1714959322961297519?s=20
-
-https://x.com/sadnessOjisan/status/1714959495313654257?s=20
-
 ## 最後に
 Cloud Native Days Fukuoka 2023 で otel meetup したいと思っているんだよね的な話を聞いて、第一回目で登壇機会いただけるとは思ってなかったので、企画の katzchang さん、ymotongpoo さんには大変感謝です。
 
 懇親会でも多くの Otel 強者の方とお話しでき、実践エピソードも教えていただいたので、次回の otel meetup 盛り上がり気運を感じています。楽しみです！
 
 あとは今後のじぶんにですが、パネルディスカッションちゃんと頑張りましょう。以上です。
+
+## おまけ：感想など
+事例紹介ネタでの登壇初めてだったので、直前まで「この知見は共有の価値あるな」と「これ聞いて何になるねん？」の情緒を行き来してました。X でのポジティブな反応は励みになりました。
+
+@[tweet](https://twitter.com/ymotongpoo/status/1714959322961297519?s=20)
+
+@[tweet](https://twitter.com/sadnessOjisan/status/1714959495313654257?s=20)
+
+@[tweet](https://twitter.com/taka2noda/status/1714955366868582899?s=20)
+
+@[tweet](https://twitter.com/paper2parasol/status/1714959280808587594?s=20)
+
+@[tweet](https://twitter.com/mochizuki875/status/1714959530852032620?s=20)
