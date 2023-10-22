@@ -1,7 +1,7 @@
 ---
 title: "OpenTelemetry Meetup 2023-10 に登壇し、計装事例について登壇しました #oteljp"
 emoji: "🎤"
-type: "tech" # tech: 技術記事 / idea: アイデア
+type: "idea" # tech: 技術記事 / idea: アイデア
 topics: [oteljp,opentelemetry,勉強会,ポエム,observability]
 published: false
 ---
@@ -9,7 +9,7 @@ published: false
 ## はじめに
 こんにちは 👋 逆井（さかさい）です。
 2023年10月19日に開催された [OpenTelemetry Meetup 2023-10](https://opentelemetry.connpass.com/event/296353/) にて、Otel 活用の事例紹介として登壇をさせていただいただきました。その際の感想をつらつらと書いていきます。
-※ はてブロや note などのメディアがないのと Zenn が好きなのでこちらにダンプしようと思います。 `tech` type でいいのかな、、、まぁいいか。
+※ はてブロや note などのメディアがないのと Zenn が好きなのでこちらにダンプしようと思います。 投稿カテゴリー `Idea` でいいかな、、、まぁいいか。
 
 まず初めに、イベントを企画・運営してくださった方々や CARTA HOLDINGS 社や、飲み物を提供してくださった Splunk 社には大変感謝です。終始カジュアルでとても良い雰囲気でした！
 
