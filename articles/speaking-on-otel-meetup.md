@@ -2,7 +2,7 @@
 title: "OpenTelemetry Meetup 2023-10 に登壇し、計装事例について登壇しました #oteljp"
 emoji: "🎤"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: []
+topics: [oteljp,opentelemetry,勉強会,ポエム,observability]
 published: false
 ---
 
