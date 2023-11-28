@@ -2,7 +2,7 @@
 title: "OpenTelemetry と OpenObserve を使って Kubernetes 監視をかじってみる"
 emoji: "🎄"
 type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [OpenTelemetry,Qiita,Kubernetes,OpenObserve,Observability]
+topics: [OpenTelemetry,Christmas,Kubernetes,OpenObserve,Observability]
 published: false
 ---
 
