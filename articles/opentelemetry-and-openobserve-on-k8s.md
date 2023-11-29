@@ -23,7 +23,7 @@ https://github.com/openobserve/openobserve#introduction-video
 
 OpenObserve を使う場合は、バイナリが配布されているので自前ホストするか、OpenObserve Cloud という SaaS 版を選択する形になります。今回は Kubernetes 上に構築して使ってみます。
 
-### OpenObserve でログ / トレース/ メトリクスで OTLP がサポートされたぞ！
+### OpenObserve のログ / トレース/ メトリクスで OTLP がサポートされたぞ！
 トレースのみ OTLP がサポートされていましたが、2023/09 にリリースされた v0.6.0 から、ログとメトリクスでもサポート（`OTLP/gRPC`, `OTLP/HTTP`）されたみたいです。喜ばしいことです。
 https://github.com/openobserve/openobserve/releases/tag/v0.6.0
 OpenTelemetry Collector で集約したテレメトリーを OpenObserve に送信するとき、ログでは `Elasticsearch Exporter`、メトリクスでは `Prometheus Remote Write Exporter` を使う必要がありましたが、今回の対応により、全て `OTLP Exporter` で OpenObserve に送ることができるようになりました 🍾
