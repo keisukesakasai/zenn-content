@@ -9,19 +9,21 @@ published: false
 ## はじめに
 こんにちは！逆井（さかさい）です。
 この記事は [OpenTelemetry Advent Calendar](https://qiita.com/advent-calendar/2023/otel) 二日目の記事です 🎄
-一日目は [@katzchang](https://twitter.com/katzchang) さんの *** でした。
-OTel のアドカレは 2022 年から始まった（多分）と思いますが、去年は `参加者 13 人` だったのに対して、今年は `参加者 *** 人` ということで、Otel 気運の高まりを感じます。
+一日目は [@katzchang](https://twitter.com/katzchang) さんの `***` でした。
+OTel のアドカレは [2022 年](https://qiita.com/advent-calendar/2022/opentelemetry) から始まった（多分）と思いますが、去年は `参加者 13 人` だったのに対して、今年は `参加者 *** 人` ということで、Otel 気運の高まりを感じます。
 
 今回は、Otel と [OpenObserve](https://openobserve.ai/) を使って Kubernetes のイベントログやメトリクスの可視化やってみた記事を書こうと思います。最近 OpenObserve でログ・トレース・メトリクス全て OTLP/HTTP で取得できるようになったらしい（嬉しい！）ので、それをやってみたかっただけです。Kubernetes 監視は後付け的になります、、、が、肩休めとして読んでください👋
 
-## OpenObserve とは
+## OpenTelemetry とは
+
+## OpenObserve 使っていきたい
 [OpenObserve](https://openobserve.ai/) はオープンソースのオブザーバビリティプラットフォームです。現状（2023/11 時点）、ログ・トレース・メトリクスの監視として利用することができます。他にも モダンな UI やアラート機構、テレメトリーのクエリライクな検索などリッチ機能が多くあります。特に、速さやストレージコストの低さを謳っており、各種モニタリング SaaS の代替を目指しているようです。詳しくは、OpenObserve の Introduction video を参照してください。
 
 https://github.com/openobserve/openobserve#introduction-video
 
 OpenObserve を使う場合は、バイナリが配布されているので自前ホストするか、OpenObserve Cloud という SaaS 版を選択する形になります。今回は Kubernetes 上に構築して使ってみます。
 
-### OpenObserve で OTLP がサポートされた
+### OpenObserve でログ / トレース/ メトリクスで OTLP がサポートされたぞ！
 トレースのみ OTLP がサポートされていましたが、2023/09 にリリースされた v0.6.0 から、ログとメトリクスでもサポート（`OTLP/gRPC`, `OTLP/HTTP`）されたみたいです。喜ばしいことです。
 https://github.com/openobserve/openobserve/releases/tag/v0.6.0
 OpenTelemetry Collector で集約したテレメトリーを OpenObserve に送信するとき、ログでは `Elasticsearch Exporter`、メトリクスでは `Prometheus Remote Write Exporter` を使う必要がありましたが、今回の対応により、全て `OTLP Exporter` で OpenObserve に送ることができるようになりました 🍾
@@ -31,7 +33,7 @@ https://openobserve.ai/docs/user-guide/ingestion/
 
 今回は、ログとメトリクスも OTLP で送れるようになったということで、Kubernetes で適当なテレメトリーを OpenTelemetry Collector で取得して、OpenObserve で可視化するをやっていきます！
 
-## OpenTelemetry Collector のセッティング
+## OpenTelemetry Collector を使っていきます
 
 ```mermaid
 graph LR
@@ -45,7 +47,7 @@ graph LR
     E(OpenObserve):::class3
 ```
 
-### Kubernetes 監視用のレシーバー
+### Kubernetes 監視するレシーバーについて
 Kubernetes では多くのテレメトリーを様々な方法で公開しており、OpenTelemetry Collector の Receiver を使うことで収集することができます。今回は以下の 2 つの Receiver を使ってみます。
 
 - [Kubernetes Cluster Receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/k8sclusterreceiver)
@@ -71,7 +73,7 @@ presets:
     enabled: true
 ```
 
-### OpenObserve に送信するエクスポーター
+### OpenObserve へ送信するエクスポーターについて
 送信側は至って簡単です。ログもメトリクスも OTLP 形式で送ることができるので、今回は `OTLP/HTTP Exporter` を使って最もシンプルに構成していきます。
 
 ```yaml
@@ -94,9 +96,9 @@ config:
 
 これで、OpenTelemetry Collector が Kubernetes のテレメトリーを取得して、OpenObserve に送ってくれます。簡単ですね。
 
-## 構築して、テレメトリー取得してみる
+## 実際にテレメトリー取得してみる
 
-### 構築する
+### 構築
 OpenObserve は [Quickstart](https://openobserve.ai/docs/quickstart/#openobserve-cloud) のコマンドを使って簡単に Kubernetes にデプロイ可能です。今回はシングルノードモードをデプロイします。[高可用性モード](https://openobserve.ai/docs/ha_deployment/)もあるみたいです。
 
 ```sh: OpenObserve デプロイ
@@ -156,7 +158,7 @@ otel-collector-deployment-opentelemetry-collector-75d54488c5gkh   1/1     Runnin
 
 ```
 
-### テレメトリー取得
+### テレメトリー確認
 今回は、Merry Christmas Deployment のレプリカ数を 2 → 3 になったときのイベントログとメトリクスを確認してみます。サービスのレプリカ数を追跡することは大事ですね。(圧)
 
 メトリクスは `k8s_deployment_desired` が取得されているので OpenObserve で見てみましょう。OpenObserve は `http://localhost:5080` でアクセスできます。
@@ -170,7 +172,7 @@ ReplicaSet がスケールアウトされているログを確認することが
 
 ![](/images/opentelemetry-and-openobserve-on-k8s/openobserve_log.png =800x)
 
-## まとめ
+## まとめます
 Kubernetes のテレメトリーを OpenTelemetry と OpenObserve を用いてサクッと可視化してみました。
 
 OpenTelemetry のアドカレですが、Kubernetes とか OpenObserve とか何がメインかわからない記事となりました。OpenTelemetry Collector にはレシーバー含む多くのコンポーネントが用意されているので、興味のある方はステータスも気にしながら見てみると良いでしょう。
