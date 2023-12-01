@@ -6,15 +6,15 @@ topics: [OpenTelemetry,Xmas,Kubernetes,OpenObserve,Observability]
 published: false
 ---
 
-## はじめに
+## ◾️ はじめに
 こんにちは！逆井（さかさい）です。
 この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 二日目の記事です 🎄
 一日目は [@katzchang](https://twitter.com/katzchang) さんの [OpenTelemetry Meetupを開催しました](https://zenn.dev/katzchang/articles/e5192f2fddda0a) でした。
 OTel のアドカレは [2022 年](https://qiita.com/advent-calendar/2022/opentelemetry) から始まった（たぶん）と思いますが、去年は `参加者 13 人` だったのに対して、今年は `参加者 24 人` ということで、OTel 気運の高まりを感じます。
 
-今回は、OTel と [OpenObserve](https://openobserve.ai/) を使って Kubernetes のイベントログやメトリクスの可視化やってみた記事を書こうと思います。O2 ではログ・トレース・メトリクスを OTLP で取得できる（嬉しい！）ので、それをやってみたかったのです。Kubernetes 監視は少し後付け的になりますが、アドカレ大量投下中の肩休めとして読んでください👋👋
+今回は、OTel と [OpenObserve](https://openobserve.ai/) を使って Kubernetes のイベントログやメトリクスの可視化やってみた記事を書こうと思います。OpenObserve ではログ・トレース・メトリクスを OTLP で取得できる（嬉しい！）ので、それをやってみたかった記事です。Kubernetes 監視は少し後付け的になりますが、アドカレ大量発生中の肩休めとして読んでください👋👋
 
-## OpenObserve 使っていきたい
+## ◾️ OpenObserve 使っていきたい
 [OpenObserve](https://openobserve.ai/)（以下、O2）はオープンソースのオブザーバビリティプラットフォームです。現状（2023/11 時点）、ログ・トレース・メトリクスの監視として利用することができます。他にもモダンな UI やアラート機能、テレメトリーのクエリライクな検索などリッチ機能が多くあります。特に、速さやストレージコストの低さを謳っており、各種モニタリング SaaS の代替を目指しているようです。詳しくは、O2 の [Introduction Video](https://github.com/openobserve/openobserve#introduction-video) を参照してください。
 
 O2 を使う場合は、バイナリが配布されているので自前ホストするか、OpenObserve Cloud という SaaS 版を選択する形になります。今回は Kubernetes 上に構築して使っていきます。
@@ -29,7 +29,7 @@ https://openobserve.ai/docs/user-guide/ingestion/
 
 今回は、ログとメトリクスも OTLP で送れるようになったということで、Kubernetes で適当なテレメトリーを OTel Collector で取得して、O2 で可視化するをやっていきます！
 
-## OTel Collector を使っていきます
+## ◾️ OTel Collector を使っていきます
 
 ```mermaid
 graph LR
@@ -93,7 +93,7 @@ config:
 
 これで、OTel Collector が Kubernetes のテレメトリーを取得して、O2 に送ってくれます。非常に簡単ですね 🚀
 
-## 実際にテレメトリー取得してみる
+## ◾️ 実際にテレメトリー取得してみる
 
 ### 構築
 O2 は [Quickstart](https://openobserve.ai/docs/quickstart/#openobserve-cloud) のコマンドを使って Kubernetes にデプロイ可能です。
@@ -170,7 +170,7 @@ ReplicaSet がスケールアウトされているログを確認することが
 
 ![](/images/opentelemetry-and-openobserve-on-k8s/openobserve_log.png =800x)
 
-## 最後に
+## ◾️ 最後に
 今回は、Kubernetes のテレメトリーを OTel with O2 でサクッと可視化してみました。
 
 モニタリングにおけるテレメトリーの収集は、様々なプログラミング言語の計装ライブラリやエクスポーターを用意する必要がありきっと大変です（プロダクト開発者目線）。しかし OpenTelemetry に乗っかることで、OTel Collector のエクスポーターのみ Go を使って用意（OTel Collector は Go で書かれています）しさえすれば、アプリからは OTel を使い OTLP 標準で様々な言語のアプリのテレメトリー収集に対応可能になります。これはモニタリングプロダクト開発目線でメリットなのかなと思います。また、今回見てきた O2 のように OTLP をネイティブにサポートすることで、エクスポーターさえも OTel に委ねることができ、恐らくしんどいであろうテレメトリー収集の大部分をオフロードできるようになります。OTel による標準化の動向はアプリケーション開発者のみならず、様々な方面に恩恵をもたらし得る流れのように感じますね。今後も OTel の発展に着目し、できることならば貢献もしていきたいなぁと思います。。。
