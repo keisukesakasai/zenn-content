@@ -22,7 +22,7 @@ O2 を使う場合は、バイナリが配布されているので自前ホス�
 ### O2 のログ / トレース/ メトリクスで OTLP がサポートされたぞ！
 トレースのみ OTLP がサポートされていましたが、2023/09 にリリースされた v0.6.0 から、ログとメトリクスでもサポート（`OTLP/gRPC`, `OTLP/HTTP`）されたみたいです。喜ばしいことです。
 https://github.com/openobserve/openobserve/releases/tag/v0.6.0
-OTel Collector で集約したテレメトリーを OpenObserve に送信するとき、ログでは `Elasticsearch Exporter`、メトリクスでは `Prometheus Remote Write Exporter` を使う必要がありましたが、v0.6.0 より全て `OTLP Exporter` で O2 に送ることができます 🍾
+OTel Collector で集約したテレメトリーを O2 に送信するとき、ログでは `Elasticsearch Exporter`、メトリクスでは `Prometheus Remote Write Exporter` を使う必要がありましたが、v0.6.0 より全て `OTLP Exporter` で O2 に送ることができます 🍾
 
 ドキュメントはまだ更新されてないようで、Trace のみ OTLP で Ingestion できるような書き振りとなっているため問い合わせてみたところ、今後更するとの回答をいただきました。
 https://openobserve.ai/docs/user-guide/ingestion/
@@ -153,7 +153,6 @@ merry-christmas-deployment-8ddb8b585-7665p                        1/1     Runnin
 merry-christmas-deployment-8ddb8b585-mrlsb                        1/1     Running   0          156m
 openobserve-0                                                     1/1     Running   0          12h
 otel-collector-deployment-opentelemetry-collector-75d54488c5gkh   1/1     Running   0          162m
-
 ```
 
 ### テレメトリー見ていく
