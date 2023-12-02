@@ -11,7 +11,7 @@ published: false
 この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 二日目の記事です 🎄
 一日目は [@katzchang](https://twitter.com/katzchang) さんの [OpenTelemetry Meetupを開催しました](https://zenn.dev/katzchang/articles/e5192f2fddda0a) でした。
 
-OTel のアドカレは [2022 年](https://qiita.com/advent-calendar/2022/opentelemetry) から始まった（たぶん）と思いますが、去年は `参加者 13 人` だったのに対して、今年は `参加者 25 人` ！満席！ということで、OTel 気運の高まりを感じます。（表記は `24 人` ですが 12/12 は代理でわたしが枠取ってるので実質 `25 人` です。）
+OTel のアドカレは [2022 年](https://qiita.com/advent-calendar/2022/opentelemetry) から始まった（たぶん）と思いますが、去年は `参加者 13 人` だったのに対して、今年は `参加者 25 人` ！満席 🎉 ！ということで、OTel 気運の高まりを感じます。（表記は `24 人` ですが 12/12 は代理でわたしが枠取ってるので実質 `25 人` です。）
 
 今回は、OTel と [OpenObserve](https://openobserve.ai/) を使って Kubernetes のイベントログやメトリクスの可視化やってみた記事を書こうと思います。OpenObserve ではログ・トレース・メトリクスを OTLP で取得できる（嬉しい！）ので、それをやってみたかった記事です。Kubernetes 監視は少し後付け的になりますが、アドカレ大量発生中の肩休めとして読んでください👋👋
 
