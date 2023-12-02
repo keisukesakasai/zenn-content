@@ -25,7 +25,7 @@ O2 を使う場合は、バイナリが配布されているので自前ホス�
 https://github.com/openobserve/openobserve/releases/tag/v0.6.0
 OTel Collector で集約したテレメトリーを O2 に送信するとき、ログでは `Elasticsearch Exporter`、メトリクスでは `Prometheus Remote Write Exporter` を使う必要がありましたが、v0.6.0 より全て `OTLP Exporter` で O2 に送ることができます 🍾
 
-ドキュメントはまだ更新されてないようで、Trace のみ OTLP で Ingestion できるような書き振りとなっているため問い合わせてみたところ、今後更するとの回答をいただきました。
+ドキュメントはまだ更新されてないようで、Trace のみ OTLP で Ingestion できるような書き振りとなっているため問い合わせてみたところ、今後更するから待っときの回答をいただきました。
 https://openobserve.ai/docs/user-guide/ingestion/
 
 今回は、ログとメトリクスも OTLP で送れるようになったということで、Kubernetes で適当なテレメトリーを OTel Collector で取得して、O2 で可視化するをやっていきます！
@@ -38,13 +38,13 @@ graph LR
     classDef class2 fill:#F5A800,fill-opacity:0.3,stroke:#F5A800
     classDef class3 fill:#E14123,fill-opacity:0.3,stroke:#E14123
     A(Kubernetes):::class1
-    A --> B(レシーバー：\nKubernetes Cluster Receiver):::class2 --> D
-    A --> C(レシーバー：\nKubernetes Objects Receiver):::class2 --> D
-    D(エクスポーター：\nOTLP/HTTP Exporter):::class2 --> |OTLP|E
+    A --> B(Receiver：\nKubernetes Cluster Receiver):::class2 --> D
+    A --> C(Receiver：\nKubernetes Objects Receiver):::class2 --> D
+    D(Exporter：\nOTLP/HTTP Exporter):::class2 --> |OTLP|E
     E(OpenObserve):::class3
 ```
 
-### Kubernetes 監視するレシーバーについて
+### Kubernetes 監視する Receiver について
 Kubernetes では多くのテレメトリーを様々な方法で公開しており、OTel Collector の Receiver を使うことで収集することができます。今回は以下の 2 つの Receiver を使ってみます。
 
 - [Kubernetes Cluster Receiver](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/receiver/k8sclusterreceiver)
@@ -54,8 +54,8 @@ Kubernetes Cluster Receiver は、Kubernetes にデプロイされている Pod 
 Kubernetes Objects Receiver は、Kubernetes API server を用いて Kubernetes イベントログ（例 Pod の生成、削除）を監視します。
 
 これら Receiver を組み込んだ OTel Collector をデプロイします。
-OTel Collector の Helm Chart を使う場合、今回のレシーバーたちは `values.yaml` に `presets` として記述することで簡単に組み込むことができます。
-以下のように、`clusterMetrics` と `kubernetesEvents` を `true` にするだけで Receiver を構成可能です。簡単ですね。利用可能な Presets の一覧は [こちら](https://opentelemetry.io/docs/kubernetes/helm/collector/#presets) にあります。
+OTel Collector の Helm Chart を使う場合、今回の Receiver たちは `values.yaml` に `presets` として記述することで簡単に組み込むことができます。
+以下のように、`clusterMetrics` と `kubernetesEvents` を `true` にするだけで Receiver を構成可能です。便利です。利用可能な Presets の一覧は [こちら](https://opentelemetry.io/docs/kubernetes/helm/collector/#presets) にあります。
 
 ```yaml: OpenTelemetry Collector の values.yaml (一部)
 mode: deployment
@@ -71,7 +71,7 @@ presets:
     enabled: true
 ```
 
-### O2 へ送信するエクスポーターについて
+### O2 へ送信する Exporter について
 送信側は至って簡単です。ログもメトリクスも OTLP 形式で送ることができるので、今回は `OTLP/HTTP Exporter` を使ってとてもシンプルに構成していきます。
 
 ```yaml
