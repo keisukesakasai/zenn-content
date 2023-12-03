@@ -6,4 +6,5 @@ topics: [xmas,sre,observability,grafana,SLO]
 published: false
 ---
 
-## ◾️ はじめに
+## はじめに
+こんにちは、逆井です。

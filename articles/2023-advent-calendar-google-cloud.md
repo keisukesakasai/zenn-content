@@ -6,4 +6,4 @@ topics: [Xmas,GCP,prometheus,Observability,Exemplar]
 published: false
 ---
 
-## ◾️ はじめに
+## はじめに
