@@ -1,8 +1,8 @@
 ---
-title: "Grafana Stackでサクッと始める SLO モニタリング"
+title: "ゆるSREというイベントでLTしました"
 emoji: "🤶"
-type: "tech" # tech: 技術記事 / idea: アイデア
-topics: [xmas,sre,observability,grafana,SLO]
+type: "idea" # tech: 技術記事 / idea: アイデア
+topics: [xmas,sre,Kubernetes,event,yurusre]
 published: false
 ---
 
