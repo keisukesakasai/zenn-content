@@ -9,7 +9,7 @@ published: true
 ## はじめに
 こんにちは、逆井（さかさい）です。
 この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 21 日目の記事です。
-空きがあったので入れちゃいました。表題の通り、Span Metrics Connector を最小構成で紹介するだけの内容なのでサッと読めます！
+空きがあったので入れちゃいました。タイトルの通り、Span Metrics Connector を最小構成で紹介するだけの内容なのでサッと読めます！
 
 https://qiita.com/advent-calendar/2023/otel
 
