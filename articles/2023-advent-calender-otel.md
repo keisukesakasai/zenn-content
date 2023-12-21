@@ -1,14 +1,14 @@
 ---
-title: "SpanMetricsConnector を使ったアプリケーションメトリクス監視"
+title: "OpenTelemetry Collector の Span Metrics Connector を使って Span から Metrics を生成してみる"
 emoji: "🤶"
-type: "idea" # tech: 技術記事 / idea: アイデア
+type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Prometheus,監視]
 published: false
 ---
 
 ## はじめに
 こんにちは、逆井（さかさい）です。
-この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 21日目の記事です。空きがあったので入れちゃいました。表題の通り、SpanMetricsConnector を紹介するだけ内容なのでサッと読めます！
+この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 21日目の記事です。空きがあったので入れちゃいました。表題の通り、Span Metrics Connector を紹介するだけ内容なのでサッと読めます！
 
 ## SpanMetricsConnector とは
 
