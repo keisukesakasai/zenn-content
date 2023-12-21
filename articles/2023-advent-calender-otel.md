@@ -3,7 +3,7 @@ title: "OpenTelemetry Collector の Span Metrics Connector を使ってメトリ
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Prometheus,監視]
-published: false
+published: true
 ---
 
 ## はじめに
@@ -181,7 +181,7 @@ https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-open
 
 ![](/images/2023-advent-calender-otel/metrics.png)
 
-この累積ヒストグラムの値を使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。
+このメトリクスを使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。
 
 ユーザー影響のあるスパンの時間などをモニタリングしたいときなどに活用できそうです。
 
