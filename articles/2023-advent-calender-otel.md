@@ -8,7 +8,8 @@ published: false
 
 ## はじめに
 こんにちは、逆井（さかさい）です。
-この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 21 日目の記事です。空きがあったので入れちゃいました。表題の通り、Span Metrics Connector を最小構成で紹介するだけの内容なのでサッと読めます！
+この記事は [OpenTelemetry Advent Calendar 2023](https://qiita.com/advent-calendar/2023/otel) 21 日目の記事です。
+空きがあったので入れちゃいました。表題の通り、Span Metrics Connector を最小構成で紹介するだけの内容なのでサッと読めます！
 
 https://qiita.com/advent-calendar/2023/otel
 
@@ -178,12 +179,12 @@ https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-open
 うまく OpenTelemetry Collector でトレース情報を取得し、メトリクスを Prometheus 側に送信できていれば、Prometheus で以下のメトリクスを取得できているはずです。
 `duration_milliseconds_sum`, `duration_milliseconds_count`, `duration_milliseconds_bucket` これらが Span Metrics Connector により生成されたメトリクスです。累積ヒストグラム値である `duration_milliseconds_bucket` はコネクターの設定で指定した `buckets` を元に以下のように取得できていることが Prometheus から確認できます。
 
-![](/images/2023-advent-calender-otel/metrics.png =750x)
+![](/images/2023-advent-calender-otel/metrics.png)
 
 この累積ヒストグラムの値を使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。
 アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。ユーザー影響の大きい特定のスパンの実行時間などをモニタリングしたいときなどに活用できそうですね。
 
-![](/images/2023-advent-calender-otel/graph.png =750x)
+![](/images/2023-advent-calender-otel/graph.png)
 
 このように、分散トレースのみ取得しているアプリケーションからも、OpenTelemetry Collector のテレメトリー処理（今回は Span Metrics Connector を活用）に乗っかることで、メトリクスを収集できる一例を見てみました。とても便利なので、OpenTelemetry Collector を使うモチベが高まります。
 
