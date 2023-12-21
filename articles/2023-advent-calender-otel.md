@@ -181,14 +181,14 @@ https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-open
 
 ![](/images/2023-advent-calender-otel/metrics.png)
 
-この累積ヒストグラムの値を使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。
-アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。ユーザー影響の大きい特定のスパンの実行時間などをモニタリングしたいときなどに活用できそうですね。
+この累積ヒストグラムの値を使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。
+ユーザー影響の大きい特定のスパンの実行時間などをモニタリングしたいときなどに活用できそうですね。
 
 ![](/images/2023-advent-calender-otel/graph.png)
 
-このように、分散トレースのみ取得しているアプリケーションからも、OpenTelemetry Collector のテレメトリー処理（今回は Span Metrics Connector を活用）に乗っかることで、メトリクスを収集できる一例を見てみました。とても便利なので、OpenTelemetry Collector を使うモチベが高まります。
+このように、分散トレースのみ取得しているアプリケーションからも、OpenTelemetry Collector のテレメトリー処理（今回は Span Metrics Connector を活用）に乗っかることで、メトリクスを収集できるという一例を見てみました。便利なので、OpenTelemetry Collector を使うモチベが高まります。
 
 ## 最後に
-OpenTelemetry Collector のコネクターと、その一つである Span Metrics Connector をサクッと紹介しました
+OpenTelemetry Collector のコネクターと、その一つである Span Metrics Connector をサクッと紹介しました。
 
 明日は [@AoToLog_](https://twitter.com/AoToLog_) の 「OpenTelemetry と〇〇」です。〇〇 に何が入るかは 当日のお楽しみということで楽しみです！
