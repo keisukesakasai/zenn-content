@@ -176,12 +176,16 @@ opentelemetry-instrument python app.py
 https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-opentelemetry
 
 ## 準備 OK！テレメトリーを見てみましょう
-うまく OpenTelemetry Collector でトレース情報を取得し、メトリクスを Prometheus 側に送信できていれば、Prometheus で以下のメトリクスを取得できているはずです。
-`duration_milliseconds_sum`, `duration_milliseconds_count`, `duration_milliseconds_bucket` これらが Span Metrics Connector により生成されたメトリクスです。累積ヒストグラム値である `duration_milliseconds_bucket` はコネクターの設定で指定した `buckets` を元に以下のように取得できていることが Prometheus から確認できます。
+OpenTelemetry Collector でトレース情報を取得し、メトリクスを Prometheus に送信できていれば、Prometheus では以下のメトリクスを取得できているはずです。
+- `duration_milliseconds_sum`
+- `duration_milliseconds_count`
+- `duration_milliseconds_bucket`
+
+これらが Span Metrics Connector により生成されたメトリクスです。累積ヒストグラム値である `duration_milliseconds_bucket` はコネクターの設定（`otel-collector-config.yaml`）で指定した `buckets` を元に以下のように取得できていることが Prometheus で確認できます。
 
 ![](/images/2023-advent-calender-otel/metrics.png)
 
-このメトリクスを使い、90パーセンタイル応答時間を計算すると以下のようなグラフを作ることができます。アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。
+このメトリクスを使い、90 %ile 応答時間を計算すると以下のようなグラフを作ることができます。アプリケーションでは Flask サーバーがリクエストを受信しハンドラーを実行した際のスパンを取得しているため、このグラフを見ることでアプリケーションがどんな時間で応答できているかを監視することができます。
 
 ユーザー影響のあるスパンの時間などをモニタリングしたいときなどに活用できそうです。
 
