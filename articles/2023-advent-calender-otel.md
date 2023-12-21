@@ -65,7 +65,7 @@ https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/conn
 1. 分散トレースのバックエンドサービスである Grafana Tempo でもスパンを使って RED メトリクスを生成することが可能です。これは、上記の Span Metrics Processor の実装をミラーリングすることを目標に設計されているようです。収集できるメトリクス名が少し異なりますが、OpenTelemetry Collector と同様のタイプのメトリクスを収集できます。
 https://grafana.com/docs/tempo/latest/metrics-generator/span_metrics/
 
-2. Span Metrics Connector で生成したメトリクス（Grafana Tempo でも可）にはエグザンプラーを追加することができ、これによりメトリクスにトレース ID を付与し、メトリクスとトレースを関連付け解析性を向上することができます。エグザンプラーについては余力があったら別記事で紹介します。。
+2. Span Metrics Connector で生成したメトリクスにはエグザンプラーを追加することができ（Grafana Tempo でも可）、これによりメトリクスにトレース ID を付与し、メトリクスとトレースを関連付け解析性を向上することができます。エグザンプラーについては余力があったら別記事で紹介します。
 :::
 
 
