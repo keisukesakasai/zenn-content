@@ -70,7 +70,7 @@ https://grafana.com/docs/tempo/latest/metrics-generator/span_metrics/
 
 ## Span Metrics Connector を使ってみる
 では早速、やっていきましょう。
-今回は、アプリケーションから分散トレースを OpenTelemetry Collector に送信し、Span Metrics Connector を使って Prometheus にメトリクスを Remote Writer していく構成にします。
+今回は、アプリケーションから分散トレースを OpenTelemetry Collector に送信し、Span Metrics Connector で処理し、Prometheus にメトリクスを [Prometheus Remote Write Exporter](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/exporter/prometheusremotewriteexporter) を使って送信していく構成にします。
 
 ![](/images/2023-advent-calender-otel/architecture.png =900x)
 
