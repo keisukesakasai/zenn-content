@@ -1,5 +1,5 @@
 ---
-title: "OpenTelemetry Collector の Span Metrics Connector を使って Span から Metrics を生成してみる"
+title: "OpenTelemetry Collector の Span Metrics Connector を使って Metrics を生成してみる"
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Prometheus,監視]
