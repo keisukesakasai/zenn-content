@@ -1,5 +1,5 @@
 ---
-title: "OpenTelemetry Collector の Span Metrics Connector を使って Metrics を生成してみる"
+title: "OpenTelemetry Collector の Span Metrics Connector を使ってメトリクスを生成してみる"
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Prometheus,監視]
@@ -46,7 +46,7 @@ service:
       exporters: [bar]
 ```
 
-上の設定例では、Count Connector を用いて、トレースパイプラインとメトリクスパイプラインを接続し、条件（Span の attribute や Span 名）に合致した Span の数をカウントし、メトリクス（`my.prod.event.count`）として出力するようにしています。このようにコネクターを使ってテレメトリーの加工、処理を便利に行うテレメトリーパイプラインを構成することができます。
+上の設定例では、Count Connector を用いて、トレースパイプラインとメトリクスパイプラインを接続し、条件（スパンの attribute やスパン名）に合致したスパン数をカウントし、メトリクス（`my.prod.event.count`）として出力するようにしています。このようにコネクターを使ってテレメトリーの加工、処理を便利に行うテレメトリーパイプラインを構成することができます。
 
 この Count Connector の例では、スパンの数を見ていますが、特定のログの数をカウントしてメトリクス生成することもできます。これについては [@katzchang](https://twitter.com/katzchang) さんの記事が分かりやすく解説してくれていますので興味のある方は見てみください。
 https://zenn.dev/katzchang/articles/8ef357a35f0496
@@ -54,7 +54,7 @@ https://zenn.dev/katzchang/articles/8ef357a35f0496
 コネクターには他にもいろいろ種類があり（[Contrib Repository](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector)）、今回紹介する Span Metrics Connector もその一つです。
 
 ### Span Metrics Connector
-トレースパイプラインとメトリクスパイプラインを接続し、「取得した Span から Request, Error and Duration (R.E.D) メトリクスを生成してくれるコネクター」です。元々 [Span Metrics Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/spanmetricsprocessor) として提供されていましたがコネクターが導入されこちらは今は deprecated となっています。Processor よりだいぶ Configuration の記述が簡易的になっています。
+トレースパイプラインとメトリクスパイプラインを接続し、「取得したスパンから Request, Error and Duration (R.E.D) メトリクスを生成してくれるコネクター」です。元々 [Span Metrics Processor](https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/processor/spanmetricsprocessor) として提供されていましたがコネクターが導入されこちらは今は deprecated となっています。Processor よりだいぶ Configuration の記述が簡易的になっています。
 
 https://github.com/open-telemetry/opentelemetry-collector-contrib/tree/main/connector/spanmetricsconnector
 
@@ -190,4 +190,4 @@ https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-open
 ## 最後に
 OpenTelemetry Collector のコネクターと、その一つである Span Metrics Connector をサクッと紹介しました
 
-明日は [@AoToLog_](https://twitter.com/AoToLog_) の 「OpenTelemetry と〇〇」です。〇〇 に何が入るかは 当日のお楽しみということで楽しみです。
+明日は [@AoToLog_](https://twitter.com/AoToLog_) の 「OpenTelemetry と〇〇」です。〇〇 に何が入るかは 当日のお楽しみということで楽しみです！
