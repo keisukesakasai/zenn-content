@@ -13,7 +13,7 @@ published: true
 
 https://qiita.com/advent-calendar/2023/otel
 
-## SpanMetricsConnector とは
+## Span Metrics Connector とは
 
 ### Connectors
 Span Metrics Connector の紹介に入る前に、OpenTelemetry Collector の `Connectors`（以下、コネクター）というコンポーネントについて簡単に紹介します。コネクターはエクスポーターとレシーバーの両方の役割を持ち、2 つのテレメトリーパイプラインを繋ぐ働きをします。
