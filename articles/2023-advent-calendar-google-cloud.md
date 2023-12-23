@@ -1,5 +1,5 @@
 ---
-title: "Google Cloud Managed Service for Prometheus でも Exemplar できるみたいなのでやってみる"
+title: "Google Cloud Managed Service for Prometheus でエグザンプラー使ってみる"
 emoji: "🎅"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Xmas,GCP,prometheus,Observability,Exemplar]
