@@ -1,9 +1,9 @@
 ---
-title: "Google Cloud Managed Service for Prometheus でエグザンプラー使ってみる"
+title: "Google Cloud Managed Service for Prometheusを使ってメトリクスとトレースを紐付け O11y 強化！"
 emoji: "🎅"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Xmas,GCP,prometheus,Observability,Exemplar]
-published: false
+published: true
 ---
 
 ## はじめに
@@ -11,20 +11,22 @@ published: false
 この記事は Google Cloud Advent Calendar 2023 の 23 日目の記事になります 🎄
 https://qiita.com/advent-calendar/2023/gcp
 
-前日は [@takashabe](https://twitter.com/takashabe) さんの [Cloud Runでログとトレースを紐づけてObservabilityを高める](https://zenn.dev/castingone_dev/articles/20231222-gcp_o11y) でした。こちらの記事では「ログとトレース」を紐付け可観測性を高める方法が述べられています。
+前日は [@takashabe](https://twitter.com/takashabe) さんの [Cloud Runでログとトレースを紐づけてObservabilityを高める](https://zenn.dev/castingone_dev/articles/20231222-gcp_o11y) でした。こちらの記事では「ログとトレース」を紐付け可観測性を高める方法が述べられています！
 
-本記事では「メトリクスとトレース」を紐付けることでシステムの状態の解析性を向上させる方法について書いていこうと思います。オブザーバビリティにおいて、テレメトリーデータ（ログやトレース、メトリクスなど）が紐付いて収集されていることはとても重要な要素です。22日目, 23日目の記事で3つのテレメトリーデータを紐付ける方法を一気見していきましょう！（並びは偶然）
+本記事では「メトリクスとトレース」を紐付けることでシステム状態の解析性を向上させる方法について書いていきます。オブザーバビリティにおいて、テレメトリーデータ（ログやトレース、メトリクスなど）が相互に紐付いて収集されていることはとても重要な要素です。
+
+22、23日目の記事でテレメトリーを紐付ける方法を一気見していきましょう！（並びは偶然）
 
 ## 前提
-メトリクスとトレースの紐付けのために、Google Cloud Managed Service for Prometheus（以下、GMP）や Cloud Trace を使用します。本記事では紐付ける方法についてフォーカスするため、これらプロダクトについての説明は省略します。
+メトリクスとトレースの紐付けのために、Google Cloud Managed Service for Prometheus（以下、GMP）や Cloud Monitoring, Cloud Trace を使用します。本記事では紐付ける方法についてフォーカスするため、これらプロダクトや使用方法についての説明は省略します。
 
 ## メトリクスとトレースの紐付け（座学）
 
-### Exemplar（エグザンプラ）について
-最初に、メトリクスとトレースを紐付けるために用いるエグザンプラを簡単に紹介します。
+### エグザンプラ（Exemplar）について
+最初に、メトリクスとトレースを紐付けるために用いるエグザンプラを簡単に紹介します。Exampler ではなく、Exemplar です！以下、エグザンプラと表記します。
 
-OpenMetrics 形式のメトリクスは以下のようなフォーマットで生成されます。
-```
+Prometheus が収集するような OpenMetrics 形式のメトリクスは以下のようなフォーマットで生成されます。
+```sh
 # TYPE foo histogram
 foo_bucket{le="0.01"} 0
 foo_bucket{le="1"} 11
@@ -33,34 +35,39 @@ foo_bucket{le="+Inf"} 17
 foo_count 17
 foo_sum 324789.3
 ```
-これは一般的な Histgram 形のメトリクスですが、このメトリクスに対して OpenMetrics エグザンプラを用いて付与情報を追加することができます。
+これは一般的な Histgram 型メトリクスのサンプルです。見馴染みの深い方も多いでしょう。このメトリクスに対して OpenMetrics エグザンプラを用いて付与情報を追加することができます。
 https://github.com/OpenObservability/OpenMetrics/blob/main/specification/OpenMetrics.md#exemplars-1
 エグザンプラとしてトレース ID を付与したメトリクスは以下のような形です。`#` の後にラベルとして情報を追加することができます。
-```
+```sh
 # TYPE foo histogram
 foo_bucket{le="0.01"} 0
-foo_bucket{le="1"} 11 # {trace_id="KOO5S4vxi0o"}
-foo_bucket{le="10"} 17 # {trace_id="oHg5SJYRHA0"}
+foo_bucket{le="1"} 11 # {trace_id="KOO5S4vxi0o"} 0.67
+foo_bucket{le="10"} 17 # {trace_id="oHg5SJYRHA0"} 9.8 1520879607.789
 foo_bucket{le="+Inf"} 17
 foo_count 17
 foo_sum 324789.3
 foo_created  1520430000.123
 ```
 
-### エグザンプラによる、メトリクスとトレースのクロスシグナル相関
+:::message
+
+### エグザンプラによる、メトリクスとトレースの相関
 エグザンプラにより、メトリクスに対してトレース情報を紐付けることができます。
 
-これにより、モニタリングバックエンドによってはメトリクスから分散トレースへの遷移などが可能になり、サービスのパフォーマンス異常が発生した際に、メトリクスの突然の変化に関連するトレースを素早く発見することができます。一方で、エグザンプラを使用せず、個別にメトリクスとトレースを保持している場合は、サービスで何が起きているかを特定するために、タイムスタンプなどを使用して手動で各テレメトリーを相互に参照する必要があり手間ですね。
+これにより、メトリクスから分散トレースへの遷移が可能になり、サービスのパフォーマンス異常が発生した際に、メトリクスの突然の変化に関連する分散トレースを素早く発見することができます。
 
-これはまさに、オブザーバビリティ界隈でよく目にする "looking for a needle in a haystack"（膨大な情報の中から探しているものを、目的を持って即座に見つける）に通じます。
+エグザンプラを使用せず、個別にメトリクスとトレースを保持している場合は、サービスで何が起きているかを特定するために、タイムスタンプなどを使用して手動で各テレメトリーを相互に参照する必要があり手間ですね。きっとあるあるですが。
+
+まさに、オブザーバビリティ界隈でよく目にする "looking for a needle in a haystack"（膨大な情報の中から探しているものを、目的を持って即座に見つける）に通じます。
+:::
 
 ### Google Cloud のサービスを使う
-GMP を使うとエグザンプラを取り込むことができます。また取り込んだメトリクスを Cloud Monitoring の Metrics Explorer で可視化すると、エグザンプラから関連するトレース情報をダッシュボード上にプロットし Cloud Trace への遷移を行うことができます。
+GMP を使うとエグザンプラを取り込むことができます！！
+また取り込んだメトリクスを Cloud Monitoring の Metrics Explorer で可視化すると、エグザンプラから関連するトレース情報をダッシュボード上にプロットし Cloud Trace への遷移が可能です。
 
-以降では、サンプルアプリケーションを用いることでメトリクスを取得し、レイテンシが大きくなった際のエグザンプラーからトレース情報に遷移しアプリケーション内部のパフォーマンスを詳細に見ていきます。これによりトラブルシューティングを簡便化でき、エグザンプラを使ったメトリクスとトレース情報の紐付けのメリットを紹介します。
+以降のパートでは、サンプルアプリケーションを用いることでアプリケーションメトリクスを取得し、レイテンシが大きくなった際のエグザンプラーからトレース情報に遷移しアプリケーション内部のパフォーマンスを詳細に見ていきます。これによりトラブルシューティングを簡便化でき、エグザンプラを使ったメトリクスとトレース情報の紐付けのメリットをデモ的に紹介します。
 
-サポートされている GMP のコレクションのバージョンや、メトリクスの型（例えば、GMP の場合はヒストグラム型に適用されたエグザンプラーのみ取り込むことが可能）、エグザンプラの保持期間についてはドキュメントを参照してください。
-
+エグザンプラがサポートされている GMP コレクションのバージョンや、メトリクスの型（例えば、GMP の場合は、ヒストグラム型に適用されたエグザンプラのみ取り込むことが可能）、エグザンプラの保持期間についてはドキュメントを参照してください。
 https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja
 
 ## メトリクスとトレースの紐付け（やっていき）
@@ -69,14 +76,15 @@ https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja
 ### アプリケーションのデプロイ
 アプリケーションは Go で簡単なサーバーを書きました。特筆すべき点は以下です。
 - OpenTelemetry を使って分散トレース計装
-- prometheus/client_golang を使ってメトリクス計装
-  - `/` エンドポイントに対するリクエストの Duration をヒストグラムメトリクスとして収集
+- prometheus/client_golang パッケージを使ってメトリクス計装
+  - `/` エンドポイントに対するリクエストの Duration を Histgram 型 メトリクスとして収集
   - メトリクスにエグザンプラとして `trace_id` / `span_id` / `project_id` を付与
   - そのメトリクスを `/metrics` エンドポイントで配信
 
-このアプリケーションを Kubernetes にデプロイして適当にアクセスした後、`/metrics` エンドポイントからメトリクスをスクレイピングしてあげると以下のメトリクスを取得できます。エグザンプラとしてメトリクスにトレース情報が付与されていることがわかります。
-```sh
-❯ curl -H 'Accept: application/openmetrics-text' localhost:8080/metrics
+このアプリケーションを Kubernetes にデプロイして、`/metrics` エンドポイントからメトリクスをスクレイピングしてあげると以下のようなメトリクスを取得できます。
+エグザンプラとしてメトリクスにトレース情報が付与されていることがわかります。
+```sh: /metrics エンドポイントに curl を投げる
+$ curl -H 'Accept: application/openmetrics-text' localhost:8080/metrics
 # HELP http_request_duration_seconds A histogram of the HTTP request durations in seconds.
 # TYPE http_request_duration_seconds histogram
 http_request_duration_seconds_bucket{le="0.01"} 0
@@ -226,15 +234,14 @@ func setupTracerProvider() (*sdktrace.TracerProvider, error) {
 
 	return tp, nil
 }
-
 ```
 
 :::
 
 ### メトリクス監視
 GKE の場合、Autopilot の場合は 1.25 以降、Standard の場合は 1.27 以降で GMP コンポーネントであるマネージドコレクション（Prometheus ベースのコレクタ）が有効化されています。
-```sh
-❯ kubectl get po -ngmp-system
+```sh: GKE にデプロイされている GMP コンポーネント
+$ kubectl get po -ngmp-system
 NAME                              READY   STATUS    RESTARTS      AGE
 alertmanager-0                    2/2     Running   0             38h
 collector-b5sbg                   2/2     Running   0             38h
@@ -255,25 +262,26 @@ metadata:
 spec:
   selector:
     matchLabels:
+	  # 監視対象をラベルで選択
       app.kubernetes.io/name: gcp-advent-calendar
   endpoints:
   - port: metrics
     interval: 3s
 ```
 
-```sh
-❯ kubectl get podmonitoring
+```sh: デプロイした PodMonitoring リソースを確認
+$ kubectl get podmonitoring
 NAME                  AGE
 gcp-advent-calendar   4s
 ```
 
 :::message
 GMP の設定である [OperatorConfig の設定値で「ターゲットステータス機能」](https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed?hl=ja#target-status)があります。
-デフォルトでは無効化されていますが、有効化することにより PodMonitoring の監視ターゲットのステータスを `kubectl describe`　で出力できるようになり便利です。
+デフォルトでは無効化されていますが、有効化することにより PodMonitoring の監視ターゲットのステータスを `kubectl describe` で出力できるようになり便利です。
 
-この設定を有効化し、上でデプロイした PodMonitoring を確認すると、確かにサンプルアプリを監視し、ステータスが Active であることが確認できます
+この設定を有効化し、PodMonitoring を確認すると、確かにサンプルアプリケーションを監視し、ステータスが Active であることが確認できます。
 
-```sh
+```sh: PodMonitoring を describe して監視対象アプリケーションのステータスを確認
 ❯ kubectl describe podmonitoring gcp-advent-calendar
 Name:         gcp-advent-calendar
 Namespace:    google-cloud-advent-calendar
@@ -297,32 +305,35 @@ Namespace:    google-cloud-advent-calendar
 ```
 :::
 
-### テレメトリーを見ていきましょう
-アプリケーションから取得したヒストグラム型メトリクスである `http_request_duration_seconds` を Metrics Explorer のヒートマップで見てみましょう。1時間弱 1RPS で負荷をかけ続けた結果が以下です。
-見慣れない方もいるかもしれませんが、そこまで難しくなく、X 軸方向は時間、Y 軸方向に Duration の箱（単位：秒）があり、色がその箱に含まれているデータ数（分布）になります。結果を見ると、基本的に 1 秒弱でレイテンシーが分布しているようです。白線で見えている 95 パーセンタイルの線もその辺をうようよしています。
+### さて、収集したメトリクスを見ていきましょう
+アプリケーションから収集したメトリクスである `http_request_duration_seconds` を Metrics Explorer のヒートマップで見てみましょう。
+
+見慣れない方もいるかもしれませんが、そこまで難しくなく、X 軸方向は時間、Y 軸方向に Duration の箱（単位：秒）があり、色がその箱に含まれているデータ数（分布）になります。結果を見ると、基本的に 1 秒弱でレイテンシーが分布しているようです。白線で見えている 95 パーセンタイルの線もその辺をうようよしていることが確認できます。
 
 ![](/images/2023-advent-calendar-google-cloud/heatmap.png =900x)
 
-グラフの中にいくつかポイントがあることが分かりますが、これがエグザンプラでトレース情報を持っているメトリクス値です。ポイントをクリックすると、トレース情報に基づいて、Cloud Trace の画面を表示してくれます。
+グラフの中にいくつかポイントがあることが分かりますが、これがエグザンプラでトレース情報が付与されたメトリクスです。ポイントを押下すると、トレース情報に基づいて、Cloud Trace の画面を表示してくれます。アプリケーションの各処理でどのくらいの処理時間がかかっているかが分かります。
 
 ![](/images/2023-advent-calendar-google-cloud/metrics-trace-1.png =900x)
 
-ヒートマップ上部を見ると、稀に 3 秒くらい応答に時間を要しているリクエストがありそうなこともわかります。（アプリケーションに 1 % くらいで Sleep を仕込んでいるため）ここにも、エグザンプラによるサンプルトレースがあるのでクリックしてみます。その結果が以下です。上の典型的なメトリクス値のトレースに比べると、`Func2` での処理時間が大きくなっていることが分散トレースから簡単に取得することができます！
+ヒートマップ上部を見ると、稀に 3 秒くらい応答に時間を要しているリクエストがありそうなこともわかります。（アプリケーションに 1 % くらいで Sleep を仕込んでいるため）
+
+ここにも、エグザンプラによるサンプルトレースがあるのでクリックしてみます。その結果が以下です。上で確認した典型的なメトリクス値のトレースに比べると、`Func2` での処理時間が大きくなっていることが分散トレースから簡単に取得することができます 🎉🎉
 
 ![](/images/2023-advent-calendar-google-cloud/metrics-trace-2.png =900x)
 
-このように、メトリクスと分散トレースを紐付けることで、メトリクスの異常値を俯瞰し、さらにアプリケーション内部の処理を細かく見る分散トレースにドリルダウン的に探索しにいけるのでエグザンプラを使ったテレメトリーの紐付けは大変便利です。ぜひやってみてください。
+このように、メトリクスと分散トレースを紐付けることで、メトリクスの異常値を俯瞰し、さらにそこからアプリケーション内部の処理を細かく見ることができる分散トレースへドリルダウン的に探索しにいけます。エグザンプラを使ったテレメトリーの紐付けはトラブルシューティングにおいても便利です。ぜひやってみてください。
 
 ## まとめ
-GMP や Clout Monitoring, Cloud Trace を使ってメトリクスとトレースを紐づけて、オブザーバビリティを強化しました。聞き馴染みのないエグザンプラについて知るきっかけになれば嬉しいです。
+GMP や Clout Monitoring, Cloud Trace を使ってメトリクスとトレースを紐づけてみました。聞き馴染みのないエグザンプラについて知るきっかけになれば嬉しいです！
 
-この記事では紐付けてみるところにフォーカスして、あまりヒストグラムやエグザンプラについて触れてません。Cloud Native Days Tokyo 2022 のセッションでもう少し詳しく解説したのでもし興味がある方がいらっしゃったらぜひ見てみてください。
+この記事ではあまり Histgram やエグザンプラについて詳細触れられていません。
+[Cloud Native Days Tokyo 2022](https://cloudnativedays.jp/cndt2022) のセッションでもう少し詳しく解説したのでもし興味がある方がいらっしゃったらぜひ見てみてください。
 https://speakerdeck.com/k6s4i53rx/cndt2022-shi-jian-opentelemetry-to-oss-woshi-tuta-observability-ji-pan-nogou-zhu?slide=20
 
 それでは皆さん良いお年を！
 
 ## 参考
+- OREILLY, オブザーバビリティ・エンジニアリング
 - https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja
 - https://cloud.google.com/blog/ja/products/devops-sre/trace-exemplars-now-available-in-managed-service-for-prometheus
-
-metrics-trace-1
