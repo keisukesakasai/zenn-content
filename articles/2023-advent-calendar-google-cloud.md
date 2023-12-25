@@ -71,7 +71,10 @@ GMP を使うとエグザンプラを取り込むことができます！！
 https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja
 
 ## メトリクスとトレースの紐付け（やっていき）
-まずは監視対象であるアプリケーションのデプロイと、監視に必要な準備をします。今回は Google Kubernetes Engine（GKE）上で検証を進めていきます。
+まずは監視対象であるアプリケーションのデプロイと、監視に必要な準備をします。
+構築する全体像は以下です。今回は Google Kubernetes Engine（GKE）上にアプリケーションをデプロイし検証を進めていきます。
+
+![](/images/2023-advent-calendar-google-cloud/arch.png =900x)
 
 ### アプリケーションのデプロイ
 アプリケーションは Go で簡単なサーバーを書きました。特筆すべき点は以下です。
@@ -79,11 +82,15 @@ https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja
 - prometheus/client_golang パッケージを使ってメトリクス計装
   - `/` エンドポイントに対するリクエストの Duration を Histgram 型 メトリクスとして収集
   - メトリクスにエグザンプラとして `trace_id` / `span_id` / `project_id` を付与
+  ※ これらのパラメーターは [Cloud Trace と統合](https://cloud.google.com/stackdriver/docs/managed-prometheus/exemplars?hl=ja#trace-compatibility) するために必要になります
   - そのメトリクスを `/metrics` エンドポイントで配信
 
-このアプリケーションを Kubernetes にデプロイして、`/metrics` エンドポイントからメトリクスをスクレイピングしてあげると以下のようなメトリクスを取得できます。
-エグザンプラとしてメトリクスにトレース情報が付与されていることがわかります。
+このアプリケーションを Kubernetes にデプロイして、`/metrics` エンドポイントからメトリクスをスクレイピングしてみると以下のようなメトリクスを取得でき、エグザンプラとしてメトリクスにトレース情報（と Google Cloud の Project 情報）が付与されていることもわかります。
 ```sh: /metrics エンドポイントに curl を投げる
+$ kubectl get pod
+NAME                                   READY   STATUS    RESTARTS   AGE
+gcp-advent-calendar-58d46cb84d-pbtgl   1/1     Running   0          8s
+
 $ curl -H 'Accept: application/openmetrics-text' localhost:8080/metrics
 # HELP http_request_duration_seconds A histogram of the HTTP request durations in seconds.
 # TYPE http_request_duration_seconds histogram
@@ -238,7 +245,35 @@ func setupTracerProvider() (*sdktrace.TracerProvider, error) {
 
 :::
 
-### メトリクス監視
+:::details アプリケーションの K8s マニフェスト全文
+
+```yaml: manifest.yaml
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gcp-advent-calendar
+  labels:
+    app.kubernetes.io/name: gcp-advent-calendar
+spec:
+  selector:
+    matchLabels:
+      app.kubernetes.io/name: gcp-advent-calendar
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app.kubernetes.io/name: gcp-advent-calendar
+    spec:
+      containers:
+      - image: ghcr.io/keisukesakasai/gcp-exemplar-app:latest
+        name: gcp-advent-calendar
+        ports:
+        - name: metrics
+          containerPort: 8080
+```
+:::
+
+### メトリクス監視の構成 with GMP
 GKE の場合、Autopilot の場合は 1.25 以降、Standard の場合は 1.27 以降で GMP コンポーネントであるマネージドコレクション（Prometheus ベースのコレクタ）が有効化されています。
 ```sh: GKE にデプロイされている GMP コンポーネント
 $ kubectl get po -ngmp-system
@@ -250,7 +285,7 @@ gmp-operator-8547d84898-pcjn9     1/1     Running   0             38h
 rule-evaluator-74bc75b4f7-2h6pq   2/2     Running   2 (38h ago)   38h
 ```
 
-先ほどのアプリケーションのメトリクスを取り込むために [PodMonitoring カスタムリソース](https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed?hl=ja#gmp-pod-monitoring)を作成します。これにより、メトリクスを自動で収集してくれます。今回は 3 秒間隔でスクレイピングするよう設定をしています。
+先ほどデプロイしたアプリケーションのメトリクスを取り込むために [PodMonitoring カスタムリソース](https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed?hl=ja#gmp-pod-monitoring)を作成します。PodMonitoring で適切な監視対象の設定を行うことで、アプリケーションのメトリクスを自動でスクレイピングし収集してくれます。
 
 ```yaml:pod-monitoring.yaml
 apiVersion: monitoring.googleapis.com/v1
@@ -264,6 +299,7 @@ spec:
     matchLabels:
 	  # 監視対象をラベルで選択
       app.kubernetes.io/name: gcp-advent-calendar
+  # 3 秒間隔で /metrics エンドポイントのメトリクスを収集
   endpoints:
   - port: metrics
     interval: 3s
@@ -276,7 +312,8 @@ gcp-advent-calendar   4s
 ```
 
 :::message
-GMP の設定である [OperatorConfig の設定値で「ターゲットステータス機能」](https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed?hl=ja#target-status)があります。
+GMP の [OperatorConfig の設定値で「ターゲットステータス機能」](https://cloud.google.com/stackdriver/docs/managed-prometheus/setup-managed?hl=ja#target-status)というものがあります。
+
 デフォルトでは無効化されていますが、有効化することにより PodMonitoring の監視ターゲットのステータスを `kubectl describe` で出力できるようになり便利です。
 
 この設定を有効化し、PodMonitoring を確認すると、確かにサンプルアプリケーションを監視し、ステータスが Active であることが確認できます。
@@ -306,29 +343,29 @@ Namespace:    google-cloud-advent-calendar
 :::
 
 ### さて、収集したメトリクスを見ていきましょう
-アプリケーションから収集したメトリクスである `http_request_duration_seconds` を Metrics Explorer のヒートマップで見てみましょう。
+アプリケーションから収集したメトリクスである `http_request_duration_seconds` を [Metrics Explorer](https://cloud.google.com/monitoring/charts/metrics-explorer?hl=ja) のヒートマップで見てみましょう。
 
-見慣れない方もいるかもしれませんが、そこまで難しくなく、X 軸方向は時間、Y 軸方向に Duration の箱（単位：秒）があり、色がその箱に含まれているデータ数（分布）になります。結果を見ると、基本的に 1 秒弱でレイテンシーが分布しているようです。白線で見えている 95 パーセンタイルの線もその辺をうようよしていることが確認できます。
+見慣れない方もいるかもしれませんが、見方は簡単で、X 軸方向は時間、Y 軸方向は Histgram の箱（Duration の秒数）があり、色がその箱に含まれているデータ数（分布）になります。結果を見ると、基本的に 1 秒弱でレイテンシーが分布しているようです。白線で見えている 95 パーセンタイルの線もその辺をうようよしていることが確認できます。
 
 ![](/images/2023-advent-calendar-google-cloud/heatmap.png =900x)
 
-グラフの中にいくつかポイントがあることが分かりますが、これがエグザンプラでトレース情報が付与されたメトリクスです。ポイントを押下すると、トレース情報に基づいて、Cloud Trace の画面を表示してくれます。アプリケーションの各処理でどのくらいの処理時間がかかっているかが分かります。
+グラフの中にいくつかポイントがあることが分かりますが、これがエグザンプラでトレース情報が付与されたメトリクスです。ポイントを押下すると、トレース情報に基づいて、Cloud Trace の画面を表示してくれます。アプリケーションの各処理でどのくらいの処理時間がかかっているかが分かります。（下図は典型的なリクエストの分散トレース）
 
 ![](/images/2023-advent-calendar-google-cloud/metrics-trace-1.png =900x)
 
-ヒートマップ上部を見ると、稀に 3 秒くらい応答に時間を要しているリクエストがありそうなこともわかります。（アプリケーションに 1 % くらいで Sleep を仕込んでいるため）
+ヒートマップ上部を見ると、稀に 3 秒くらい応答に時間を要しているリクエストがありそうなこともわかります。※ アプリケーションに 1 % くらいの割合で Sleep を仕込んでいるため
 
-ここにも、エグザンプラによるサンプルトレースがあるのでクリックしてみます。その結果が以下です。上で確認した典型的なメトリクス値のトレースに比べると、`Func2` での処理時間が大きくなっていることが分散トレースから簡単に取得することができます 🎉🎉
+ここにも、エグザンプラによるサンプルトレースがあるのでクリックしてみます。その結果が以下です。上で確認した典型的なリクエストのトレースに比べると、`Func2` での処理時間が大きくなっていることが分散トレースから簡単に取得することができます 🎉🎉
 
 ![](/images/2023-advent-calendar-google-cloud/metrics-trace-2.png =900x)
 
-このように、メトリクスと分散トレースを紐付けることで、メトリクスの異常値を俯瞰し、さらにそこからアプリケーション内部の処理を細かく見ることができる分散トレースへドリルダウン的に探索しにいけます。エグザンプラを使ったテレメトリーの紐付けはトラブルシューティングにおいても便利です。ぜひやってみてください。
+このように、メトリクスと分散トレースを紐付けることで、メトリクスの異常値を俯瞰し、さらにそこからアプリケーション内部の処理を細かく見ることができる分散トレースへドリルダウン的に探索しにいけます。エグザンプラを使ったテレメトリーの紐付けはトラブルシューティングにおいて便利です。ぜひ検討してみてください！
 
 ## まとめ
-GMP や Clout Monitoring, Cloud Trace を使ってメトリクスとトレースを紐づけてみました。聞き馴染みのないエグザンプラについて知るきっかけになれば嬉しいです！
+GMP や Clout Monitoring, Cloud Trace を使ってメトリクスとトレースを紐づけてみました。聞き馴染みのないエグザンプラについて知るきっかけになればと思います！
 
-この記事ではあまり Histgram やエグザンプラについて詳細触れられていません。
-[Cloud Native Days Tokyo 2022](https://cloudnativedays.jp/cndt2022) のセッションでもう少し詳しく解説したのでもし興味がある方がいらっしゃったらぜひ見てみてください。
+この記事ではあまり Histgram やエグザンプラについて詳細に触れられていません。
+[Cloud Native Days Tokyo 2022](https://cloudnativedays.jp/cndt2022) のセッションでもう少し細かく解説したのでもし興味がある方がいらっしゃったらぜひ見てみてください。
 https://speakerdeck.com/k6s4i53rx/cndt2022-shi-jian-opentelemetry-to-oss-woshi-tuta-observability-ji-pan-nogou-zhu?slide=20
 
 それでは皆さん良いお年を！
