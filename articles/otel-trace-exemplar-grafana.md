@@ -7,6 +7,7 @@ published: true
 ---
 
 ## はじめに
+こんにちは、逆井（さかさい）です。
 先日登壇した [OpenTelemetry Observability運用の実例 Lunch LT](https://findy.connpass.com/event/313260/) のフォローアップブログです！
 スライドは以下です。[togetter](https://togetter.com/li/2347270) もまとめていただいています。
 https://speakerdeck.com/k6s4i53rx/otel-trace-exemplar
