@@ -50,7 +50,7 @@ $ helm install kube-prometheus-stack prometheus-community/kube-prometheus-stack 
 $ helm install grafana grafana/grafana -n observability --version 7.3.7 --wait
 ```
 
-### Grafana 上の設定
+### Grafana の設定
 データソースとして Tempo と Prometheus を設定し、テレメトリーを可視化します。
 Prometheus の設定時 Exemplars の設定があるのでここで以下のような設定を行うことで、メトリクスダッシュボード上に Exemplars として Trace ID が付与されたメトリクスがポイントとしてプロットされ `Metrics と Trace の接続` を行うことができます。
 ![](/images/otel-trace-exemplar-grafana/metrics_to_trace.png =1000x)
