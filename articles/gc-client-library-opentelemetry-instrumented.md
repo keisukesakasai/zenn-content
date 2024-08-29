@@ -1,9 +1,9 @@
 ---
-title: "Google Cloud Client Libraries for Go のデフォルト計装が OTel になってた"
+title: "Google Cloud Client Libraries for Go のデフォルト計装が OTel になった"
 emoji: "🔭"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [GoogleCloud,Go,OpenTelemetry,Observability,Memo]
-published: false
+published: true
 ---
 
 [Google Cloud Client Libraries for Go](https://github.com/googleapis/google-cloud-go/tree/main) は、Go アプリから Google Cloud のさまざまなリソースを操作するためのクライアントライブラリを提供しています。クライアントライブラリは内部の挙動や性能を把握するための方法を備えています。

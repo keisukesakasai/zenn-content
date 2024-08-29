@@ -3,7 +3,7 @@ title: "Datadog トレーサーで OpenTelemetry 仕様のスパンを受け取�
 emoji: "🔭"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Datadog,OpenTelemetry,Trace,Observability,Python]
-published: false
+published: true
 ---
 
 ## はじめに
