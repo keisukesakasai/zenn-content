@@ -6,7 +6,7 @@ topics: [GoogleCloud,Go,OpenTelemetry,Observability,Memo]
 published: true
 ---
 
-[Google Cloud Client Libraries for Go](https://github.com/googleapis/google-cloud-go/tree/main) は、Go アプリから Google Cloud のさまざまなリソースを操作するためのクライアントライブラリを提供しています。クライアントライブラリは内部の挙動や性能を把握するための方法を備えています。
+[Google Cloud Client Libraries for Go](https://github.com/googleapis/google-cloud-go/tree/main) は、Go アプリから Google Cloud のさまざまなリソースを操作するためのクライアントライブラリを提供しています。また、クライアントライブラリは内部の挙動や性能を把握するための方法を備えています。
 https://github.com/googleapis/google-cloud-go/blob/main/debug.md#logging-debugging-and-telemetry
 
 一部のクライアントライブラリ^[[リンク先](https://github.com/googleapis/google-cloud-go/blob/main/debug.md#tracing-experimental)に列挙されているライブラリ]は分散トレースのための計装が施されており（`experimental`）、従来 OpenCensus での計装でしたが、2024/05 に OpenTelemetry でのトレース計装がデフォルトになりました^[https://github.com/googleapis/google-cloud-go/pull/10287 で対応がされました]。以前までは OpenTelemetry で計装してるアプリとクライアントライブラリのトレースを接続するためには、以下のいずれかの対応が必要でした。
