@@ -103,3 +103,6 @@ $ opentelemetry-instrument python app.py # OpenTelemetry の Auto Instrumentatio
 
 ## まとめ
 ニッチではありますが、オブザーバビリティツールとして Datadog を使いながら、カスタムスパンを作成する計装を OpenTelemetry でやる方法について書きました。何かの参考になれば幸いです。
+
+最後に宣伝ですが、Datadog Learning Center に新たに OpenTelemetry を題目にした e-learning が追加されています。興味のある方はぜひ受講してみてください。もちろん無料です。
+https://learn.datadoghq.com/courses/otel-with-datadog
