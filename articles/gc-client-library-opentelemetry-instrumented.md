@@ -20,7 +20,7 @@ https://github.com/googleapis/google-cloud-go/blob/main/debug.md#logging-debuggi
 https://github.com/googleapis/google-cloud-go/blob/main/debug.md#opencensus
 :::
 
-OpenTelemetry でトレース計装しているアプリから `cloud.google.com/go/datastore` を使って Datastore に適当にデータを Put してみます。Cloud Trace ではアプリ（自分で書いた）側のスパンと、クライアントライブラリ側のスパンを確認することができます。
+OpenTelemetry でトレース計装しているアプリから `cloud.google.com/go/datastore` を使って Datastore に適当にデータを Put してみます。Cloud Trace ではアプリ側のスパンと、クライアントライブラリ側のスパンを確認することができます。
 
 ![](/images/gc-client-library-opentelemetry-instrumented/cloud_trace.png =900x)
 
