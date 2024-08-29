@@ -16,7 +16,7 @@ https://github.com/googleapis/google-cloud-go/blob/main/debug.md#logging-debuggi
 [#10287](https://github.com/googleapis/google-cloud-go/pull/10287) により OpenTelemetry 計装でデフォルトで繋がります。喜ばしいです。
 
 :::message
-`GOOGLE_API_GO_EXPERIMENTAL_TELEMETRY_PLATFORM_TRACING=opencensus` にすることで非推奨ではありますが、OpenCensus の使用を設定することが可能です。ただし、`2024/12/02`` に削除が予定されているので注意が必要です。
+`GOOGLE_API_GO_EXPERIMENTAL_TELEMETRY_PLATFORM_TRACING=opencensus` にすることで非推奨ではありますが、OpenCensus の使用を設定することが可能です。ただし、`2024/12/02` に削除が予定されているので注意が必要です。
 https://github.com/googleapis/google-cloud-go/blob/main/debug.md#opencensus
 :::
 
