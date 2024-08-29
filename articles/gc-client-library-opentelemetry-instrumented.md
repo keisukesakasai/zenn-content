@@ -26,4 +26,4 @@ OpenTelemetry でトレース計装しているアプリから `cloud.google.com
 
 余談ですが、上図のスパンが実際にクライアントライブラリ側で生成されているコードは [こちら](https://github.com/googleapis/google-cloud-go/blob/main/datastore/datastore.go#L645) です。トレースをすることで性能的な解析はもちろんですが、どういう流れで処理をしているかを大雑把に把握できるので、クライアントライブラリのソースコードを実際に読み解く必要があるときなどに便利です。
 
-今回は Google Cloud Client Libraries for Go のデフォルト計装が OpenTelemetry になったのでメモ程度のブログ記事を書きました。
+今回は Google Cloud Client Libraries for Go のデフォルト計装が OpenTelemetry になったのでメモブログ記事を書きました。
