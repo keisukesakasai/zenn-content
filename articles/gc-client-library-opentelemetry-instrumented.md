@@ -1,5 +1,5 @@
 ---
-title: "Google Cloud Client Libraries for Go のデフォルトの計装が OTel になってた"
+title: "Google Cloud Client Libraries for Go のデフォルト計装が OTel になってた"
 emoji: "🔭"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [GoogleCloud,Go,OpenTelemetry,Observability,Memo]
