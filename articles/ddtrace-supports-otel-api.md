@@ -17,7 +17,7 @@ https://docs.datadoghq.com/ja/tracing/trace_collection/custom_instrumentation/ot
 - ① トレースのセットアップ（TracerProvider の作成など）
 - ② スパンの生成（計装ライブラリ使用 / カスタムスパン作成）
 
-Python アプリを Datadog のライブラリを用いてトレース計装する場合は以下のコマンドで自動計装（OpenTelemetry でいうノーコード計装）されます。
+Python アプリを Datadog のライブラリを用いてトレース計装する場合は以下のコマンドで自動計装（OpenTelemetry でいうゼロコード計装）されます。
 ```sh
 $ pip install ddtrace
 $ ddtrace-run python app.py
@@ -75,14 +75,14 @@ $ ddtrace-run python app.py
 Flask は `dd-trace` により自動計装がされスパンが作成されており、OpenTelemetry API で作成したカスタムスパンも接続して確認することができます。
 
 ## 何が嬉しいのか
-今回のサンプルではカスタムスパンは一つですが、実際のアプリではより複雑にカスタムスパンを作成している場合も多いと思います。そういったケースで OpenTelemetry API でカスタムスパンを作成しておくことはプロプライエタリの回避という観点で重要です。例えば、Datadog トレーサーではなく OpenTelemetry のノーコード計装で Python アプリを計装したい場合は、計装プログラム（[opentelemetry-instrument](https://opentelemetry.io/docs/zero-code/python/#configuring-the-agent)）を変更するだけで容易に切り替えることが可能です。環境によってオブザーバビリティツールが異なる場合にも有効かもしれません。
+今回のサンプルではカスタムスパンは一つですが、実際のアプリではより複雑にカスタムスパンを作成している場合も多いと思います。そういったケースで OpenTelemetry API でカスタムスパンを作成しておくことはプロプライエタリの回避という観点で重要です。例えば、Datadog トレーサーではなく OpenTelemetry のゼロコード計装で Python アプリを計装したい場合は、計装プログラム（[opentelemetry-instrument](https://opentelemetry.io/docs/zero-code/python/#configuring-the-agent)）を変更するだけで容易に切り替えることが可能です。環境によってオブザーバビリティツールが異なる場合にも有効かもしれません。
 ```sh
 # $ ddtrace-run pythonapp.py
 $ opentelemetry-instrument app.py # OpenTelemetry の Auto Instrumentation ツールを使用
 ```
 :::message
 切り替える際の `ddtrace-run` と `opentelemetry-instrument` のサポートライブラリの差分などの互換性やパフォーマンスは確認する必要がもちろんあります。
-また、今回はノーコード計装の Python を例に挙げましたが、Go などコードにトレースのセットアップを書く必要がある場合は、切り替える際にコードの改修が一部必要であることは補足します。
+また、今回はゼロコード計装の Python を例に挙げましたが、Go などコードにトレースのセットアップを書く必要がある場合は、切り替える際にコードの改修が一部必要であることは補足します。
 :::
 
 ## まとめ
