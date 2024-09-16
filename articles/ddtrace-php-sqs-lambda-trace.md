@@ -20,7 +20,7 @@ Python アプリから呼び出す場合は `dd-trace-py` を使うことで自�
 https://github.com/DataDog/dd-trace-py/blob/main/ddtrace/contrib/internal/botocore/services/sqs.py#L55
 
 Datadog Lambda Extension Layer 側の実装も見てみます。[ここ](https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L155) でトレースコンテキストを抽出していることがわかります。
-https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L166-L169
+
 :::message
 Datadog Lambda Extension Layer は様々な Runtime で用意がありますが、この処理（`MessageAttributes` からトレースコンテキストを Extract する処理）がサポートされているのは現状 Python と NodeJS です。
 https://docs.datadoghq.com/serverless/aws_lambda/distributed_tracing/?tab=go#python-and-nodejs
