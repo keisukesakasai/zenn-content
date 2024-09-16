@@ -49,7 +49,8 @@ $sqsClient->sendMessage([
 構成としてはこんな感じです。
 ![](/images/ddtrace-php-sqs-lambda-trace/architecture.png =900x)
 
-これで `dd-trace-py` が内部でやっていることと同様のことを実現できます。PHP アプリから SQS を介して Lambda を実行してみます。無事に以下のように非同期処理でも分散トレースすることが確認できました。
+これで `dd-trace-py` が内部でやっていることと同様のことを実現できます。PHP アプリから SQS を介して Lambda を実行してみます。
+無事に以下のように非同期処理でも分散トレースすることが確認できました。
 ![](/images/ddtrace-php-sqs-lambda-trace/php-sqs-lambda.png =900x)
 
 ## まとめ
