@@ -19,7 +19,7 @@ Python アプリから呼び出す場合は `dd-trace-py` を使うことで自�
 `dd-trace-py` のコードを見てみます。[この辺](https://github.com/DataDog/dd-trace-py/blob/main/ddtrace/contrib/internal/botocore/services/sqs.py#L55)で SQS に送るメッセージの `MessageAttributes` に、`_datadog` キーとしてトレースコンテキストを埋めていることが分かります。
 https://github.com/DataDog/dd-trace-py/blob/main/ddtrace/contrib/internal/botocore/services/sqs.py#L55
 
-Datadog Lambda Extension Layer 側の実装も見てみます。[ここ](https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L155) でトレースコンテキストを抽出していることがわかります。
+Datadog Lambda Extension Layer （Python）側の実装も見てみます。[ここ](https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L155) でトレースコンテキストを抽出していることがわかります。
 
 文章だと分かりにくいですが、絵にするとこんな感じです。
 ![](/images/ddtrace-php-sqs-lambda-trace/architecture.png =900x)
