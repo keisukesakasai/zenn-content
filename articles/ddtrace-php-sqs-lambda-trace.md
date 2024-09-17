@@ -21,6 +21,9 @@ https://github.com/DataDog/dd-trace-py/blob/main/ddtrace/contrib/internal/botoco
 
 Datadog Lambda Extension Layer 側の実装も見てみます。[ここ](https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L155) でトレースコンテキストを抽出していることがわかります。
 
+文章だと分かりにくいですが、絵にするとこんな感じです。
+![](/images/ddtrace-php-sqs-lambda-trace/architecture.png =900x)
+
 :::message
 Datadog Lambda Extension Layer は様々な Runtime で用意がありますが、この処理（`_datadog` キーからトレースコンテキストを抽出する処理）がサポートされているのは現状 Python と NodeJS です。
 https://docs.datadoghq.com/serverless/aws_lambda/distributed_tracing/?tab=go#python-and-nodejs
@@ -45,9 +48,6 @@ $sqsClient->sendMessage([
     'MessageAttributes' => $messageAttributes,
 ]);
 ```
-
-構成としてはこんな感じです。
-![](/images/ddtrace-php-sqs-lambda-trace/architecture.png =900x)
 
 これで `dd-trace-py` が内部でやっていることと同様のことを実現できます。PHP アプリから SQS を介して Lambda を実行してみます。
 無事に以下のように非同期処理でも分散トレースすることが確認できました。
