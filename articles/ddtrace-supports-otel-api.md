@@ -1,5 +1,5 @@
 ---
-title: "Datadog トレーサーで OpenTelemetry のスパンを受け取る"
+title: "Datadog のトレーサーで OpenTelemetry のスパンを受け取る"
 emoji: "🔭"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Datadog,OpenTelemetry,Trace,Observability,Python]
