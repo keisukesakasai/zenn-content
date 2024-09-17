@@ -3,7 +3,7 @@ title: "Amazon SQS を介した AWS Lambda の呼び出しを Datadog で分散�
 emoji: "🔭"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Datadog,Observability,Lambda,SQS,PHP]
-published: false
+published: true
 ---
 
 ## はじめに
