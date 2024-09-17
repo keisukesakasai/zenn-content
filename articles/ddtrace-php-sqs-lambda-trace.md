@@ -21,6 +21,8 @@ https://github.com/DataDog/dd-trace-py/blob/main/ddtrace/contrib/internal/botoco
 
 Datadog Lambda Extension Layer （Python）側の実装も見てみます。[ここ](https://github.com/DataDog/datadog-lambda-python/blob/main/datadog_lambda/tracing.py#L155) でトレースコンテキストを抽出していることがわかります。
 
+これを参考に、PHP でも SQS に送るメッセージにトレースコンテキストを乗せることで `PHP アプリ -> SQS -> Lambda` の一連の分散トレースができそうです。やってみましょう。
+
 文章だと分かりにくいですが、絵にするとこんな感じです。
 ![](/images/ddtrace-php-sqs-lambda-trace/architecture.png =900x)
 
@@ -28,8 +30,6 @@ Datadog Lambda Extension Layer （Python）側の実装も見てみます。[こ
 Datadog Lambda Extension Layer は様々な Runtime で用意がありますが、この処理（`_datadog` キーからトレースコンテキストを抽出する処理）がサポートされているのは現状 Python と NodeJS です。
 https://docs.datadoghq.com/serverless/aws_lambda/distributed_tracing/?tab=go#python-and-nodejs
 :::
-
-こんな感じで、PHP でも SQS に送るメッセージにトレースコンテキストを乗せることで `PHP アプリ -> SQS -> Lambda` の一連の分散トレースができそうです。やってみましょう。
 
 ## やってみる
 PHP スクリプトのメッセージにトレースコンテキストを付与する部分を抜粋します。ソース全体は[こちら](https://github.com/keisukesakasai/work-2024/blob/main/datadog-php-apm/src/sqs_api_dd.php)を参照してください。
