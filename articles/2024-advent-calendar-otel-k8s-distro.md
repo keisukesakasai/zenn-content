@@ -3,7 +3,7 @@ title: "OTel Collector の Distribution についてと、K8s Distro OTel Collec
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Kubernetes,oteltui]
-published: false
+published: true
 ---
 
 お疲れ様です。
