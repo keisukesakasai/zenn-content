@@ -1,5 +1,5 @@
 ---
-title: "OTel Collector の Distribution についてと、K8s Distro OTel Collector"
+title: "OTel Collector の Distribution についてと、OpenTelemetry Collector Kubernetes Distro"
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Kubernetes,oteltui]
@@ -71,7 +71,7 @@ service:
       exporters: [otlp]
 ```
 
-デプロイをすると Kubernetes のイベントを OTel Collector が収集し始めます。ここでは [ymtdzzz](https://x.com/ymtdzzz) さんの [otel-tui](https://github.com/ymtdzzz/otel-tui) に OTLP でメトリクスを送信し可視化してみます。otel-tui は素晴らしいツールです。
+デプロイをすると Kubernetes のイベントを OTel Collector が収集し始めます。ここでは [ymtdzzz](https://x.com/ymtdzzz) さんの [otel-tui](https://github.com/ymtdzzz/otel-tui) に OTLP でメトリクスを送信し可視化してみます。otel-tui は OTLP のシグナルを可視化する素晴らしいツールで重宝をしています。
 
 ![](/images/2024-advent-calendar-otel-k8s-distro/fig.png =900x)
 
