@@ -6,6 +6,7 @@ topics: [OpenTelemetry,Xmas,Observability,Kubernetes,oteltui]
 published: true
 ---
 
+### 導入
 お疲れ様です。
 OpenTelemetry Advent Calendar 2024 に空きがあったので、OTel Collector に関するブログを簡単に書いています。
 https://qiita.com/advent-calendar/2024/opentelemetry
