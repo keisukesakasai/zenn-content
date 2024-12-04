@@ -1,5 +1,5 @@
 ---
-title: "OTel Collector の Distribution についてと、OpenTelemetry Collector Kubernetes Distro"
+title: "OpenTelemetry Collector の Distribution についてと、OTelCol Kubernetes Distro"
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,Kubernetes,oteltui]
