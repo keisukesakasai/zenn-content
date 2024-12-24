@@ -3,7 +3,7 @@ title: "GraphQL トレースにカスタム属性を付与して、Datadog で�
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [Datadog,Xmas,Observability,GraphQL,Facets]
-published: false
+published: true
 ---
 
 ### はじめに
@@ -18,7 +18,7 @@ GraphQL の場合、トレースのエンドポイントが `/graphql` と単一
 ![](/images/2024-advent-calendar-dd/graphql.png =900x)
 
 ### 実装
-ここではサンプルアプリケーションとして、Java 実装の GraphQL サーバーを使っていきます。[@shukawam](https://x.com/shukawam)が教えてくれました。Thanks 🙏
+ここではサンプルアプリケーションとして、Java 実装の GraphQL サーバーを使っていきます。[@shukawam](https://x.com/shukawam)が教えてくれました。Thank you 🙏
 https://github.com/npalm/graphql-java-demo
 
 ここでは例えば Mutation のオペレーションで呼び出される関数で、アクティブスパンの取り出しと、スパンに対するカスタム属性のアタッチを行います。ここでは簡単のため Resolver のなかに直接実装しています。
@@ -51,7 +51,8 @@ Datadog のトレースエクスプローラ画面では、スパンの属性を
 
 ![](/images/2024-advent-calendar-dd/result_2.png =900x)
 
-あとは、ファセットリストにスパンタグを追加をすればこちらのものです。オペレーションというディメンションでトレースを集計、可視化することができ GraphQL トレースに関しても Datadog を使って解析性を向上させることができました 🥂
+あとは、ファセットリストにスパンタグを追加をすればこちらのものです。
+オペレーションというディメンションでトレースを集計、可視化することができ GraphQL トレースに関しても Datadog を使って解析性を向上させることができました 🥂
 https://docs.datadoghq.com/tracing/trace_explorer/span_tags_attributes/
 
 ### あとがき
