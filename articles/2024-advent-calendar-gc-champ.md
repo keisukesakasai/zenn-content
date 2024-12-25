@@ -91,14 +91,14 @@ Configuration が作成されるので Kubernetes にデプロイしていきま
 
 ![](/images/2024-advent-calendar-champ/flow.png =650x)
 
-### BindPlan Agent をリモート設定し、トレース情報を処理してみる
+## BindPlan Agent をリモート設定し、トレース情報を処理してみる
 画像が多くて疲れてきたと思いますが、最後 BindPlane OP の真骨頂であるリモート設定を行って終わろうと思います。
 
 パイプラインのプロセッサーを押下します。
 
 ![](/images/2024-advent-calendar-champ/add_processor.png =650x)
 
-今回は簡単のために「Add Fields」プロセッサーを追加して、謎のタグとして「`Advent:Calendar...!!`」を付与する設定を追加します。
+今回は簡単のために「Add Fields」プロセッサーを追加して、謎のタグとして「`Advent:Calendar...!!`」を付与する設定を追加します。ちなみに、他にもたくさんの[プロセッサーたち](https://observiq.com/docs/resources/processors)が用意されています。見てるだけで楽しくなります。
 
 ![](/images/2024-advent-calendar-champ/add_tag_processor.png =650x)
 
