@@ -28,13 +28,13 @@ OpAMP はもともと BindPlane で使用されていたカスタムプロトコ
 BindPlane OP が OpAMP サーバーであり、BindPlane Agent で OpAMP クライアントが起動しています。BindPlane Agent 自体は GitHub で[公開](https://github.com/observIQ/bindplane-otel-collector)されています。OpAMP については今年の Cloud Native Days で取り上げて話たので気になるかたは見てみてください。このセッションで出てくる OpAMP バックエンド（サンプル）のめちゃくちゃリッチ版が BindPlane OP です。
 https://speakerdeck.com/k6s4i53rx/getting-started-opentelemetry-collector-with-opamp
 
-### セットアップ
+## セットアップ
 実際に動かしてみましょう。ワイワイ。以下のような構成です。
 ![](/images/2024-advent-calendar-champ/archi.png =650x)
-GKE 上にトレース計装したアプリケーションと、BindPlane OP / Agent をデプロイします。BindPlane OP の UI からオブザーバビリティパイプラインをリモート操作して、トレース情報に適当なタグ（`Advent:Calendar...!!`）を付与してみます。簡単にセットアップ手順も見て行きます。
+GKE 上にトレース計装したアプリと、BindPlane OP / Agent をデプロイします。BindPlane OP の UI からオブザーバビリティパイプラインをリモート操作して、トレース情報に適当なタグ（`Advent:Calendar...!!`）を付与してみます。簡単にセットアップ手順も見て行きます。
 
-#### BindPlane OP デプロイ
-[Helm](https://github.com/observIQ/bindplane-op-helm) が用意されており、[手順](https://observiq.com/docs/advanced-setup/kubernetes-installation/server/install)に従って簡単にデプロイができます。`Single Instance` モードと `High Availability` モードがあり、今回はデモなので `Single Instance` モードでセットアップします。
+### BindPlane OP デプロイ
+[Helm](https://github.com/observIQ/bindplane-op-helm) が用意されており、[手順](https://observiq.com/docs/advanced-setup/kubernetes-installation/server/install)に従って簡単にデプロイができます。`Single Instance`、`High Availability` モードがあり、今回はデモなので `Single Instance` モードでセットアップします。
 
 BindPlane のライセンスが必要なので [Free](https://observiq.com/download) で作成をしました。また、割と大きめのリソースリクエストが設定されているのでデプロイ時はご留意ください。
 ```yaml
@@ -48,7 +48,7 @@ resources:
     memory: '8192Mi'
 ```
 
-正常にデプロイできていれば、以下のように Pod がデプロイされます。
+正常にデプロイできていれば、以下のように Pod を確認できます。
 ```sh
 NAME                                        READY   STATUS    RESTARTS   AGE
 bindplane-0                                 1/1     Running   0          3m42s
@@ -56,8 +56,10 @@ bindplane-prometheus-0                      1/1     Running   0          3m42s
 bindplane-transform-agent-f5c6fb575-5cgtr   1/1     Running   0          3m42s
 ```
 
-#### BindPlane Agent のデプロイ
+### BindPlane Agent のデプロイ
 次に BindPlane ディストリビューション OTel Collector である、BindPlane Agent をデプロイしていきます。これは BindPlane OP の UI から行っていきます。UI は 3001 ポートで開いています。全て書くと細かいのでほどよい粒度で書いています。
+
+#### Configurations の作成
 
 まずは「Configurations > New」から BindPlane の Configuration を作成します。今回は Kubernetes に `Gateway` としてデプロイする Configutations を作成します。他にも [Cluster や Node があります](https://observiq.com/docs/advanced-setup/kubernetes-installation/agent/architecture)。
 
@@ -67,13 +69,15 @@ bindplane-transform-agent-f5c6fb575-5cgtr   1/1     Running   0          3m42s
 
 ![](/images/2024-advent-calendar-champ/sources.png =650x)
 
-テレメトリーの送信（Destinations）を設定します。もちろん Google Cloud です。
+テレメトリーの送信（Destinations）を設定します。もちろん Google Cloud です！
 
 ![](/images/2024-advent-calendar-champ/destination.png =650x)
 
 作成がうまくいくと、以下のような OTLP -> Google Cloud のオブザーバビリティパイプラインの設定が UI で見えます。かっこいい。
 
 ![](/images/2024-advent-calendar-champ/config_ok.png =650x)
+
+#### 作った Configurations を使って Agent を作成
 
 次に、ここで作った Configuration を使って Agent を「Agents > Install Agents」から作成していきます。
 
