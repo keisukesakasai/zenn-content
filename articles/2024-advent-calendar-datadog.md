@@ -20,7 +20,7 @@ GraphQL の場合、トレースのエンドポイントが `/graphql` と単一
 ![](/images/2024-advent-calendar-dd/graphql.png =900x)
 
 ### 実装
-ここではサンプルアプリケーションとして、Java 実装の GraphQL サーバーを使っていきます。[@shukawam](https://x.com/shukawam)が教えてくれました。Thank you 🙏
+ここではサンプルアプリケーションとして、Java 実装の GraphQL サーバーを使っていきます。[@shukawam](https://x.com/shukawam) が教えてくれました。Thank you 🙏
 https://github.com/npalm/graphql-java-demo
 
 ここでは例えば Mutation のオペレーションで呼び出される関数で、アクティブスパンの取り出しと、スパンに対するカスタム属性のアタッチを行います。ここでは簡単のため Resolver のなかに直接実装しています。
