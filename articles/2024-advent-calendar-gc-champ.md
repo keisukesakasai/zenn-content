@@ -110,7 +110,7 @@ Configuration が作成されるので Kubernetes にデプロイしていきま
 
 ![](/images/2024-advent-calendar-champ/cloud_trace.png =650x)
 
-### まとめ
+## まとめ
 今回は BindPlane を使った OTel Collector（BindPlane Agent）のリモート制御を行い、Google Cloud Observability におけるオブザーバビリティパイプラインの効率的な管理についてご紹介しました。もちろん Google Cloud 以外でも活用は可能です。
 
 OTel Collector をはじめとするテレメトリーエージェントは、監視対象が大規模になるほど管理コストが膨大になっていきます。このようなリモート管理のプロダクトを用いることで恩恵を受けることができます。またこのような技術は OpenTelemetry の OpAMP という標準プロトコルが下支えをし実現されていることを最後触れて結びとさせていただきます。
