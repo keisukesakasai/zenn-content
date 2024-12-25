@@ -8,6 +8,8 @@ published: true
 
 ### はじめに
 こんにちは、逆井です。Datadog Advent Calendar 20 日の記事です 👋
+https://qiita.com/advent-calendar/2024/datadog
+昨日は同僚 [@ynakaoku](https://x.com/ynakaoku) さんの [Datadog イベント管理でアラートを集約し正しく届ける](https://qiita.com/ynakaoku/items/b84422f4fe045f938682) でした！
 本記事では GraphQL サーバーにおけるトレースの解析性の向上のために、スパンに対してカスタム属性の追加と、Datadog UI におけるファセットのカスタマイズを行う内容を紹介していこうと思います。軽めの内容ですので気軽に読んでください👋👋👋
 
 ### 背景と方針
@@ -59,3 +61,5 @@ https://docs.datadoghq.com/tracing/trace_explorer/span_tags_attributes/
 Datadog は自動計装ツールが豊富なので、コードに手を加えなくても多くの分散トレース情報を抽出することができます。今回は GraphQL トレースを題材にカスタム計装を行う例について書きました。この手法は GraphQL トレースだけではなくさまざまなケースで有用であることは認識いただけると思います。アプリケーション固有のパラメーターをスパンに付与することで、本ネタ同様さまざまな切り口、ディメンションで解析することができアプリケーションのオブザーバビリティを向上させていくことが可能です 👋
 
 読んでいただきありがとうございます。では皆さん良いお年を！来年どこかの Datadog かコミュニティイベントでお会いしましょう。
+
+明日は同僚（先輩（メンター））の [@AoTo](https://x.com/AoToLog_) の [Datadog を使いこなす 7 Tips](https://qiita.com/AoTo0330/items/9aa324f3f8f949e8094d) です！
