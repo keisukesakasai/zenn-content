@@ -3,19 +3,19 @@ title: "BindPlane を使ってオブザーバビリティパイプラインを�
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [GoogleCloud,Bindplane,Xmas,Observability,OpenTelemetry]
-published: false
+published: true
 ---
 
-### はじめに
-こんにちは。Google Cloud Champion Innovator の逆井です。この記事は Champion Innvotor アドベントカレンダーの 21 日目の記事になります。納品が少し遅れてしまいました。
+## はじめに
+こんにちは。Google Cloud Champion Innovator 逆井です。この記事は Champion Innvotor アドベントカレンダーの 21 日目の記事になります。納品が少し遅れてしまいました。
 https://adventar.org/calendars/10061
 
-AI ネタが盛り上がっていますが、オブザーバビリティが好きなので、今回は（も）オブザーバビリティのネタを書きます。本記事では、「BindPlane」を使って Google Cloud にテレメトリーシグナルを送信するパイプラインをリモート管理するする方法をハンズオン的に紹介しようと思います 👋
+AI ネタが盛り上がっていますが、オブザーバビリティが好きなので、今回は（も）オブザーバビリティのネタを書きます。本記事では、BindPlaneを使って Google Cloud にテレメトリーシグナルを送信するパイプラインをリモート管理するする方法をハンズオン的に紹介しようと思います 👋
 
-### まず BindPlane とはを簡単に
-BindPlane は observIQ が開発している、オブザーバビリティパイプラインやテレメトリエージェントを大規模に管理するためのプロダクトです。BindPlane OP というエージェント群を管理するための UI を持つコントロールプレーンと、BindPlane Agent から構成されます。BindPlane Agent は OpenTelemetry Collector の BindPlane ディストリビューションです。
+## まず BindPlane とはを簡単に
+BindPlane は [observIQ](https://observiq.com/) が開発している、オブザーバビリティパイプラインやテレメトリエージェントを大規模に管理するためのプロダクトです。BindPlane OP というエージェント群を管理するための UI を持つコントロールプレーンと、BindPlane Agent から構成されます。BindPlane Agent は OpenTelemetry Collector の BindPlane ディストリビューションです。
 
-BindPlane Agent でテレメトリーシグナルの受信、処理、送信を行い、その BindPlane Agent を BindPlane OP から制御、管理します。送信先（Destinations）も[多くをサポート](https://observiq.com/docs/resources/destinations)しており、このあと書く Google Cloud もサポートされています。わたしの所属している Datadog もサポート範囲内です。テレメトリー受信元（Sources）の[ラインナップも豊富](https://observiq.com/docs/resources/sources)で、今回は OpenTelemetry を使っていきます。下記のアーキテクチャは[ドキュメント](https://observiq.com/docs/getting-started/quickstart-guide)引用しています。
+BindPlane Agent でテレメトリーシグナルの受信、処理、送信を行い、その BindPlane Agent を BindPlane OP から制御、管理します。送信先（Destinations）も[多くをサポート](https://observiq.com/docs/resources/destinations)しており、このあと書く Google Cloud もサポートされています。わたしが所属している Datadog もサポート範囲内です。テレメトリー受信元（Sources）の[ラインナップも豊富](https://observiq.com/docs/resources/sources)で、今回は OpenTelemetry を使っていきます。下記のアーキテクチャは[ドキュメント](https://observiq.com/docs/getting-started/quickstart-guide)引用しています。
 
 ![](/images/2024-advent-calendar-champ/bindplane.png =650x)
 
