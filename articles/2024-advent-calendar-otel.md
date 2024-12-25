@@ -1,5 +1,5 @@
 ---
-title: "CloudNative Days で OpenTelemetry の登壇をしました"
+title: "CloudNative Days で OpenTelemetry のはなしをしました"
 emoji: "🤶"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [OpenTelemetry,Xmas,Observability,CloudNativeDays]
