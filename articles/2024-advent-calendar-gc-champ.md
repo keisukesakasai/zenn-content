@@ -19,16 +19,13 @@ BindPlane Agent でテレメトリーシグナルの受信、処理、送信を�
 
 ![](/images/2024-advent-calendar-champ/bindplane.png =650x)
 
-ここでは深く触れませんが、BindPlane OP は SaaS とオンプレミスを選択できたり、いくつかのエディションが存在しています。詳しくは BindPlane のソリューションページを参照してください。
-https://observiq.com/solutions
+ここでは深く触れませんが、BindPlane OP は SaaS とオンプレミスを選択できたり、いくつかのエディションが存在しています。詳しくは BindPlane の[ソリューションページ](https://observiq.com/solutions)を参照してください。
 
-#### 落穂拾い...🍂
+### 落穂拾い...🍂
 BindPlane OP が BindPlane Agent（OTel Collector）を管理する仕組みは Open Agent Management Protocol（OpAMP）です。OpAMP は大規模エージェント群をリモート管理するためのネットワークプロトコルで OpenTelemetry で管理されています。
 https://opentelemetry.io/docs/specs/opamp/
 OpAMP はもともと BindPlane で使用されていたカスタムプロトコルが源流にあります（[ソース](https://opentelemetry.io/blog/2023/opamp-status/)）。
-
 BindPlane OP が OpAMP サーバーであり、BindPlane Agent で OpAMP クライアントが起動しています。BindPlane Agent 自体は GitHub で[公開](https://github.com/observIQ/bindplane-otel-collector)されています。
-
 OpAMP については今年の Cloud Native Days で取り上げて話たので気になるかたは見てみてください。このセッションで出てくる OpAMP バックエンド（サンプル）のめちゃくちゃリッチ版が BindPlane OP です。
 
 https://speakerdeck.com/k6s4i53rx/getting-started-opentelemetry-collector-with-opamp
