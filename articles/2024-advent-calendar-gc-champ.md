@@ -25,16 +25,12 @@ BindPlane Agent でテレメトリーシグナルの受信、処理、送信を�
 BindPlane OP が BindPlane Agent（OTel Collector）を管理する仕組みは Open Agent Management Protocol（OpAMP）です。OpAMP は大規模エージェント群をリモート管理するためのネットワークプロトコルで OpenTelemetry で管理されています。
 https://opentelemetry.io/docs/specs/opamp/
 OpAMP はもともと BindPlane で使用されていたカスタムプロトコルが源流にあります（[ソース](https://opentelemetry.io/blog/2023/opamp-status/)）。
-BindPlane OP が OpAMP サーバーであり、BindPlane Agent で OpAMP クライアントが起動しています。BindPlane Agent 自体は GitHub で[公開](https://github.com/observIQ/bindplane-otel-collector)されています。
-OpAMP については今年の Cloud Native Days で取り上げて話たので気になるかたは見てみてください。このセッションで出てくる OpAMP バックエンド（サンプル）のめちゃくちゃリッチ版が BindPlane OP です。
-
+BindPlane OP が OpAMP サーバーであり、BindPlane Agent で OpAMP クライアントが起動しています。BindPlane Agent 自体は GitHub で[公開](https://github.com/observIQ/bindplane-otel-collector)されています。OpAMP については今年の Cloud Native Days で取り上げて話たので気になるかたは見てみてください。このセッションで出てくる OpAMP バックエンド（サンプル）のめちゃくちゃリッチ版が BindPlane OP です。
 https://speakerdeck.com/k6s4i53rx/getting-started-opentelemetry-collector-with-opamp
 
 ### セットアップ
 実際に動かしてみましょう。ワイワイ。以下のような構成です。
-
 ![](/images/2024-advent-calendar-champ/archi.png =650x)
-
 GKE 上にトレース計装したアプリケーションと、BindPlane OP / Agent をデプロイします。BindPlane OP の UI からオブザーバビリティパイプラインをリモート操作して、トレース情報に適当なタグ（`Advent:Calendar...!!`）を付与してみます。簡単にセットアップ手順も見て行きます。
 
 #### BindPlane OP デプロイ
