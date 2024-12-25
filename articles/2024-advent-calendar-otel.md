@@ -27,7 +27,7 @@ https://speakerdeck.com/k6s4i53rx/getting-started-auto-instrumentation-with-open
 
 eBPF ではない Go のゼロコード計装として「Go Compile Time Instrumentation」を仕組みとしたツールもあります。代表的なものとしては、Datadog の「[orchestrion](https://github.com/DataDog/orchestrion)」や、Alibaba Cloud の「[opentelemetry-go-auto-instrumentation](https://github.com/alibaba/opentelemetry-go-auto-instrumentation)」が存在しています。コンパイル時に AST から使われているライブラリを解析して、計装コードを挿入する仕組みのようです。サポートしているライブラリの数も eBPF ツールに比べてかなり多いです。本当は orchestrion のコードを読んで解説ブログをアドカレで出したかったのですが、太刀打ちできなかったので冬休みの課題図書としました。
 
-orchestrion は Datadog ユーザー向けの計装ツール（[2024/11に GA](https://github.com/DataDog/orchestrion/releases/tag/v1.0.0)）だったのですが、現在 OTel プロジェクトに寄贈する提案が [Issue](https://github.com/open-telemetry/community/issues/2497) としてあがっています。Alibaba Cloud の opentelemetry-go-auto-instrumentation についても[同様](https://github.com/open-telemetry/community/issues/2344)です。それに伴い、Go Compile Time Instrumentation SIG の立ち上げも[提案](https://github.com/open-telemetry/community/pull/2490) されています。eBPF ゼロコード計装の今後の動向が気になりますね。
+orchestrion は Datadog ユーザー向けの計装ツール（[2024/11に GA](https://github.com/DataDog/orchestrion/releases/tag/v1.0.0)）だったのですが、現在 OTel プロジェクトに寄贈する提案が [Issue](https://github.com/open-telemetry/community/issues/2497) としてあがっています。Alibaba Cloud の opentelemetry-go-auto-instrumentation についても[同様](https://github.com/open-telemetry/community/issues/2344)です。それに伴い、Go Compile Time Instrumentation SIG の立ち上げも[提案](https://github.com/open-telemetry/community/pull/2490) されています。Go ゼロコード計装の今後の動向が気になりますね。
 
 ## CNDW2024
 OTel Collector のリモート管理をテーマに「Open Agent Management Protocol（OpAMP）」について解説しました。
