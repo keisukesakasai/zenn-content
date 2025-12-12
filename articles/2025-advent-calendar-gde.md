@@ -1,5 +1,5 @@
 ---
-title: "Vertex AI Agent Engine と OpenTelemetry における AI エージェント のトレース入門"
+title: "Vertex AI Agent Engine と OpenTelemetry における AI エージェントのトレース入門"
 emoji: "🎄"
 type: "tech" # tech: 技術記事 / idea: アイデア
 topics: [GoogleCloud, Observability, OpenTelemetry, AIAgent, VertexAI]
