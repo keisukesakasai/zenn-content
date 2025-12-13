@@ -10,7 +10,7 @@ published: true
 Hi！Google Developer Experts Advent Calendar 2025 の 12/12 担当のものです。
 https://adventar.org/calendars/11658
 
-もともと Google Cloud Champion Innovators コミュニティに所属してたんですが、今年のおめでたいことに 2025/3 に [Google Developer Experts（GDE）コミュニティに統合](https://cloud.google.com/blog/ja/products/ai-machine-learning/the-google-developer-experts-program-is-growing/)されたため、今年は GDE として GDE のアドカレに参加しております。
+もともと Google Cloud Champion Innovators コミュニティに所属してたんですが、おめでたいことに 2025/3 に [Google Developer Experts（GDE）コミュニティに統合](https://cloud.google.com/blog/ja/products/ai-machine-learning/the-google-developer-experts-program-is-growing/)されたため、今年は GDE として GDE のアドカレに参加しております。
 
 本ブログ記事では AI エージェントにおけるオブザーバビリティ強化の文脈のはなしを書こうと思います。みなさんご存知 Vertex AI Agent Engine は Google Cloud Observability のスタックといい感じに統合されているため、AI エージェント開発におけるオブザーバビリティ周りが手厚くカバーされています。本記事では特に AI エージェントのトレースについて書いていこうと思います👋
 
