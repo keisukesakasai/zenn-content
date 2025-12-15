@@ -59,10 +59,10 @@ DBM サイドからも APM の関連付けを確認することができます�
 ![](/images/2025-advent-calendar-datadog/calling-service.png =750x)
 *Calling Service を見ると、当該クエリは otel-go-dbm サービスの `GET` で実行されている*
 
-この Calling Service の関連付けは ddtrace（Datadog が配布している計装ライブラリ）を使った [APM と DBM の関連付け](https://docs.datadoghq.com/ja/database_monitoring/connect_dbm_and_apm/?tab=go) で公式にサポートされている機能です。OTel と DBM の関連付けでは現状公式的なサポートはされてなさそうで、その理由を調べてみたところクエリステートメント一致で関連付けているわけではなく、また別の機構で関連付けているよう仕様のようでした。その仕様は、冒頭伏線をはっておいた sqlcommenter です。sqlcommenter が Calling Service 機能における関連付けの要素で、sqlcommenter でデータベースクエリに対して traceparent と Datadog 独自のタグ（以下）を埋め込んでおり、これによって、DBM 側から Calling Service としてアプリケーションの情報を引けるということです。
+この Calling Service の関連付けは ddtrace（Datadog が配布している計装ライブラリ）を使った [APM と DBM の関連付け](https://docs.datadoghq.com/ja/database_monitoring/connect_dbm_and_apm/?tab=go) で公式にサポートされている機能です。OTel と DBM の関連付けでは現状公式的なサポートはされてなさそうで、その理由を調べてみたところクエリステートメント一致で関連付けているわけではなく、また別の機構で関連付けているよう仕様のようでした。その仕様は、冒頭伏線をはっておいた [sqlcommenter](https://google.github.io/sqlcommenter/go/database_sql/) です。sqlcommenter が Calling Service 機能における関連付けの要素で、sqlcommenter でデータベースクエリに対して traceparent と Datadog 独自のタグ（以下）を埋め込んでおり、これによって、DBM 側から Calling Service としてアプリケーションの情報を引けるということです。
 https://github.com/DataDog/dd-trace-go/blob/6f0ee938db01de410cd062281396b02a6ab9cf61/ddtrace/tracer/sqlcomment.go#L38-L42
 
-ちなみに、急に出てきた sqlcommenter はクエリに対してコメントを埋め込むことができる仕組みで、オブザーバビリティの文脈ではもっぱらトレース ID とかスパン ID を埋め込んでオブザーバビリティバックエンド側で関連付けるために使われます（メトリクスでいうエグザンプラー的な）。詳しくは [間瀬さん](https://x.com/makocchan_re) の [OTel Advent Calendar Day1 のブログ記事](https://zenn.dev/makocchan/articles/otel_sql_agent) が参考になります。
+ちなみに、急に出てきた sqlcommenter はクエリに対してコメントを埋め込むことができる仕組みで、オブザーバビリティの文脈ではもっぱらトレース ID とかスパン ID を埋め込んでオブザーバビリティバックエンド側で関連付けるために使われます（メトリクスでいうエグザンプラー的な）。詳しくは [間瀬さん](https://x.com/makocchan_re) の [OTel Advent Calendar Day1 のブログ記事](https://zenn.dev/makocchan/articles/otel_sql_agent) や、Google Cloud の出してる [ブログ記事](https://cloud.google.com/blog/ja/products/databases/introducing-sqlcommenter-open-source-orm-auto-instrumentation-library?hl=ja) が参考になります。
 
 今回のサンプルで使った `otelsql` でもコメント付与がサポートされているので無理やり ddtrace のタグを参考に埋め込んだでところ Calling Service にアプリケーションがマッピングされました。実験的に機能検証しただけなので取り扱いにはご留意ください。（とはいえ、付与してる情報は大体スパンから取得できるものなので、コレクターなり、Datadog Agent で自動的にマッピングしてくれると便利そうではあるので、内部でも働きがけてみようとは思います）。
 https://github.com/XSAM/otelsql/blob/main/commenter.go#L48-L53
