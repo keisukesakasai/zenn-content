@@ -10,7 +10,7 @@ published: true
 Datadog Advent Calendar 2025 の 12/14 担当の逆井（さかさい）です。
 https://qiita.com/advent-calendar/2025/datadog
 
-ちょっと前に、OpenTelemetry（以下、OTel）のトレースと、Database Monitoring のデータを関連付けするための[ドキュメント](https://docs.datadoghq.com/opentelemetry/correlate/dbm_and_traces/?tab=datadogagentddotcollector)が生えました。OTel ラバーとっては待望？の情報です。これがどういうものなのか、なんで嬉しいか、OTel と ddtrace の差分的なところを書いていきます。
+ちょっと前に、OpenTelemetry（以下、OTel）のトレースと、Database Monitoring のデータを関連付けするための[ドキュメント](https://docs.datadoghq.com/opentelemetry/correlate/dbm_and_traces/?tab=datadogagentddotcollector)が生えました。OTel ラバーにとっては待望？の情報です。これがどういうものなのか、なんで嬉しいか、OTel と ddtrace の差分的なところを書いていきます。
 
 想定読者としては、OTel や分散トレース、Datadog Database Monitoring や sqlcommenter を知っていることを想定していますが、テレメトリーシグナルの関連付けに関心を持っている方であれば読みやすいように仕上げていきます！
 
