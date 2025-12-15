@@ -64,7 +64,7 @@ https://github.com/DataDog/dd-trace-go/blob/6f0ee938db01de410cd062281396b02a6ab9
 
 ちなみに、急に出てきた sqlcommenter はクエリに対してコメントを埋め込むことができる仕組みで、オブザーバビリティの文脈ではもっぱらトレース ID とかスパン ID を埋め込んでオブザーバビリティバックエンド側で関連付けるために使われます（メトリクスでいうエグザンプラー的な）。詳しくは [間瀬さん](https://x.com/makocchan_re) の [OTel Advent Calendar Day1 のブログ記事](https://zenn.dev/makocchan/articles/otel_sql_agent) や、Google Cloud の出してる [ブログ記事](https://cloud.google.com/blog/ja/products/databases/introducing-sqlcommenter-open-source-orm-auto-instrumentation-library?hl=ja) が参考になります。
 
-今回のサンプルで使った `otelsql` でもコメント付与がサポートされているので無理やり ddtrace のタグを参考に埋め込んだでところ Calling Service にアプリケーションがマッピングされました。実験的に機能検証しただけなので取り扱いにはご留意ください。（とはいえ、付与してる情報は大体スパンから取得できるものなので、コレクターなり、Datadog Agent で自動的にマッピングしてくれると便利そうではあるので、内部でも働きがけてみようとは思います）。
+今回のサンプルで使った `otelsql` でもコメント付与がサポートされているので、無理やり ddtrace のタグを参考に埋め込んでみたところ Calling Service にアプリケーションがマッピングされました。実験的に機能検証しただけなので取り扱いにはご留意ください。（とはいえ、付与してる情報は大体スパンから取得できるものなので、コレクターなり、Datadog Agent で自動的にマッピングしてくれると便利そうではあるので、内部でも働きがけてみようとは思います）。
 https://github.com/XSAM/otelsql/blob/main/commenter.go#L48-L53
 
 ## まとめ
