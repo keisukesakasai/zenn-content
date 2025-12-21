@@ -25,7 +25,7 @@ https://colocatedeventsna2025.sched.com/event/28FN6/observability-project-update
 
 Declarative Configuration では以下のようなコンフィグファイルを用意します（敢えて書きますが、OTel Collector のコンフィグファイルとは別物です）。最小構成での例です。
 
-```yml:otel-config:yaml
+```yml:otel-config
 file_format: '1.0-rc.3'
 
 resource:
