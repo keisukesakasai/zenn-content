@@ -25,7 +25,7 @@ https://colocatedeventsna2025.sched.com/event/28FN6/observability-project-update
 
 Declarative Configuration では以下のようなコンフィグファイルを用意します（敢えて書きますが、OTel Collector のコンフィグファイルとは別物です）。最小構成での例です。
 
-```yaml:otel-config:yaml
+```yml:otel-config:yaml
 file_format: '1.0-rc.3'
 
 resource:
@@ -53,7 +53,7 @@ tracer_provider:
 ```
 
 このコンフィグファイルを渡す形で、アプリケーションを起動します。Java の場合は以下です。いつもの実行コマンドで引数を追加します。まだ `experimental` がついています。
-```sh
+```bash
 java -javaagent:/app/opentelemetry-javaagent.jar \
 　-Dotel.experimental.config.file=/app/otel-config.yaml \
 　-jar app.jar
@@ -65,7 +65,7 @@ java -javaagent:/app/opentelemetry-javaagent.jar \
 
 [こちらのブログ](https://opentelemetry.io/blog/2025/declarative-config/)では、トレースのヘルスチェックエンドポイントのサンプリング設定を Declarative Configuration により柔軟に設定できるようになると記述されています（ネタ的に、`Why it took 5 years to ignore health check endpoints in tracing` というタイトルで、環境変数設定でのサンプリング設定の難しさが表されているようです）。試しにヘルスチェックのトレースをサンプリングしない設定を Declarative Configuration で見てみましょう。ルールベースのサンプリング設定は先週リリースされた [v1.0.0-rc.3](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.3) のバージョンに [この PR](https://github.com/open-telemetry/opentelemetry-configuration/pull/410) で追加されており、以下のようなコンフィギュレーションになります。
 
-```sh
+```bash
 file_format: '1.0-rc.3'
 
 resource:
