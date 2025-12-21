@@ -22,7 +22,7 @@ Declarative Configuration を OTel 文脈で聞いたことありますか？
 https://colocatedeventsna2025.sched.com/event/28FN6/observability-project-updates
 ![](/images/2025-advent-calendar-otel/declarative-config.png =750x)
 
-アプリケーションにおける OTel SDK の設定はご存知の通り[多くの設定値](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/)を環境変数を経由して行うことができます。より複雑な設定のニーズが高まることでこのような設定方式が開発されたと語られております。執筆時点においては Java のみがサポートされています。Declarative Configuration は今年[スキーマのメジャーバージョンが1となった](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.1)ので、今後、他の言語でも順次サポートされていくでしょう（言語ごとのステータスは[こちら](https://github.com/open-telemetry/opentelemetry-configuration/blob/main/schema-docs.md#language-support-status-)で整理されています）。
+アプリケーションにおける OTel SDK の設定はご存知の通り[多くの設定値](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/)を環境変数を経由して行うことができますが、より複雑な設定のニーズが高まることで Declarative Configuration のような設定方式が開発されたと語られております。執筆時点においては Java のみがサポートされています。Declarative Configuration は今年[スキーマのメジャーバージョンが1となった](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.1)ので、今後、他の言語でも順次サポートされていくでしょう（言語ごとのステータスは[こちら](https://github.com/open-telemetry/opentelemetry-configuration/blob/main/schema-docs.md#language-support-status-)で整理されています）。
 
 ではどんな設定になるのか見てみましょう。
 
