@@ -53,6 +53,7 @@ tracer_provider:
 ```
 
 このコンフィグファイルを渡す形で、アプリケーションを起動します。Java の場合は以下です。いつもの実行コマンドで引数を追加します。まだ `experimental` がついています。
+
 ```bash
 java -javaagent:/app/opentelemetry-javaagent.jar \
 　-Dotel.experimental.config.file=/app/otel-config.yaml \
@@ -84,6 +85,7 @@ resource:
                 sampler:
                   always_off:
 ```
+
 これであれば 5 年もかからず簡単にセットアップして、不要なエンドポイントにおけるトレースサンプリングをスキップできそうです。もちろん、アプリケーションでサンプラーの設定を書いてもいいですが、言語によらない形でセットアップを宣言的に記述できる点は便利かもしれませんね。
 
 以上です！
