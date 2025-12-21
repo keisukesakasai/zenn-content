@@ -60,7 +60,11 @@ java -javaagent:/app/opentelemetry-javaagent.jar \
 こうすることで、トレース情報に advent:calendar という属性付けがされます。上記の例では `resorce.attributes` で属性を付与していました。現状設定できる全ての設定値は[こちら](https://github.com/open-telemetry/opentelemetry-configuration/blob/main/examples/kitchen-sink.yaml)で見れるようです。
 
 [こちらのブログ](https://opentelemetry.io/blog/2025/declarative-config/)では、トレースのヘルスチェックエンドポイントのサンプリング設定を Declarative Configuration によりより柔軟に設定できるようになると記述されています（ネタ的に、`Why it took 5 years to ignore health check endpoints in tracing` というタイトルで環境変数設定でのサンプリング設定の難しさを表しています）。ルールベースのサンプリング設定は先週リリースされた [v1.0.0-rc.3](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.3) に [この PR](https://github.com/open-telemetry/opentelemetry-configuration/pull/410) で追加されており、以下のようなコンフィギュレーションになります。
+
 ```sh
+file_format: '1.0-rc.3'
+
+resource:
 ...
   sampler:
     parent_based:
