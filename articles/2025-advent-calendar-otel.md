@@ -80,7 +80,7 @@ resource:
                 sampler:
                   always_off:
 ```
-これであれば 5　年もかからず簡単にセットアップして、不要なエンドポイントにおけるトレースサンプリングをスキップできそうです。もちろん、アプリケーションでサンプラーの設定を書いてもいいですが、言語によらない形でセットアップを宣言的に記述できる点は運用性向上や、横展開の際に便利かもしれませんね。
+これであれば 5 年もかからず簡単にセットアップして、不要なエンドポイントにおけるトレースサンプリングをスキップできそうです。もちろん、アプリケーションでサンプラーの設定を書いてもいいですが、言語によらない形でセットアップを宣言的に記述できる点は運用性向上や、横展開の際に便利かもしれませんね。
 
 今回は OTel SDK における Declarative Configuration について記しました。今回のデモで使った Java Agent の Declarative Configuration も [Experimental](https://opentelemetry.io/docs/zero-code/java/agent/declarative-configuration/#:~:text=Declarative%20configuration%20is%20experimental.) なステータスなのでご留意いただきつつ、ぜひ 2026 年の Declarative Configuration の進捗を追っていきましょう！
 
