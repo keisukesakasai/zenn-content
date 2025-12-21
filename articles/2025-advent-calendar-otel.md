@@ -15,8 +15,10 @@ https://qiita.com/advent-calendar/2025/otel
 
 [^1]: [ドキュメント](https://opentelemetry.io/ja/docs/) もすごい勢いで翻訳がされており、翻訳プロジェクトのメンバーのかたがたも本当にありがとうございます。
 
-本記事では、2026 年の OTel のホットトピックになりうる OTel SDK の [Declarative Configuration](https://opentelemetry.io/docs/languages/sdk-configuration/declarative-configuration/)（翻訳がついてないので、一旦このまま）について書いていこうと思います。Declarative Configuration を OTel 文脈で聞いたことありますか？まあ、そのままではあるんですが、OTel SDK のセットアップを宣言的に書けるような取り組みが進んでいます。
-先月あった [Observability Day NA](https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/co-located-events/observability-day/#thank-you-for-attending) 冒頭の基調講演でも [Austin](https://www.linkedin.com/in/austinlparker/) から最近話題の [OBI](https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation) などとともに 2026 年に期待されるアップデートとして紹介されています。
+本記事では、2026 年の OTel のホットトピックになりうる OTel SDK の [Declarative Configuration](https://opentelemetry.io/docs/languages/sdk-configuration/declarative-configuration/)（翻訳がついてないので、一旦このまま）について書いていこうと思います。
+
+Declarative Configuration を OTel 文脈で聞いたことありますか？
+まあ、そのままではあるんですが、OTel SDK のセットアップを宣言的に書けるような取り組みが進んでいます。先月あった [Observability Day NA](https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/co-located-events/observability-day/#thank-you-for-attending) 冒頭の基調講演でも [Austin](https://www.linkedin.com/in/austinlparker/) から最近話題の [OBI](https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation) などとともに 2026 年に期待されるアップデートとして紹介されています。
 https://colocatedeventsna2025.sched.com/event/28FN6/observability-project-updates
 ![](/images/2025-advent-calendar-otel/declarative-config.png =750x)
 
