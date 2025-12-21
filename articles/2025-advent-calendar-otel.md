@@ -11,7 +11,7 @@ OpenTelemetry Advent Calendar 2025 の 12/21 担当の逆井（さかさい）�
 https://qiita.com/advent-calendar/2025/otel
 
 2025 年も残り 10 日となってしまいました。
-2025 年は [入門OpenTelemetry](https://www.oreilly.co.jp/books/9784814401024/) や [実践OpenTelemetry](https://www.oreilly.co.jp/books/9784814401031/) が出版されたりと OpenTelemetry 飛躍の年だったと思います。ありがたいことにわたしもレビューにも参加させていただきました。原著も読んだのですが、このような素晴らしい書籍を母国語で読めることのありがたさ身に染みており、翻訳という大変な作業に取り組まれている訳者のかたがた[^1]には感謝してもしきれないです。この場で感謝申し上げます。
+2025 年は [入門OpenTelemetry](https://www.oreilly.co.jp/books/9784814401024/) や [実践OpenTelemetry](https://www.oreilly.co.jp/books/9784814401031/) が出版されたりと OpenTelemetry 飛躍の年だったと思います。ありがたいことにわたしもレビューに参加させていただきました。原著も読んだのですが、このような素晴らしい書籍を母国語で読めることのありがたさ身に染みており、翻訳という大変な作業に取り組まれている訳者のかたがた[^1]には感謝してもしきれないです。この場で感謝申し上げます。
 
 [^1]: [ドキュメント](https://opentelemetry.io/ja/docs/) もすごい勢いで翻訳がされており、翻訳プロジェクトのメンバーのかたがたも本当にありがとうございます。
 
