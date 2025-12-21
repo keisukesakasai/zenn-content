@@ -1,0 +1,86 @@
+---
+title: "OpenTelemetry SDK の Declarative Configuration について"
+emoji: "🎄"
+type: "tech" # tech: 技術記事 / idea: アイデア
+topics: [OpenTelemetry,Xmas,Observability,oteltui,AdventCalendar]
+published: true
+---
+
+こんにちは 👋
+OpenTelemetry Advent Calendar 2025 の 12/21 担当の逆井（さかさい）です。
+https://qiita.com/advent-calendar/2025/otel
+
+2025 年は [入門OpenTelemetry](https://www.oreilly.co.jp/books/9784814401024/) や [実践OpenTelemetry](https://www.oreilly.co.jp/books/9784814401031/) が出版されたりと OpenTelemetry 飛躍の年だったと思います。ありがたいことにレビューにも参加させていただきました。原著も読みましたが、このような素晴らしい書籍を母国語で読めることのありがたさは見に染みており、翻訳という大変な作業に取り組まれている訳者のかたがた[^1]には感謝してもしきれません。この場で感謝申し上げます。
+
+[^1]: [ドキュメント](https://opentelemetry.io/ja/docs/) もすごい勢いで翻訳がされており、翻訳プロジェクトのメンバーのかたがたもありがとうございます。
+
+本記事では、2026 年の OTel のホットトピックになりうる OTel SDK の Declarative Configuration（翻訳がついてないので、一旦このまま記述）について書いていこうと思います。[Declarative Configuration](https://opentelemetry.io/docs/languages/sdk-configuration/declarative-configuration/) を OTel 文脈で聞いたことありますか？まあそのままではあるんですが、OTel SDK のセットアップを宣言的に書けるような取り組みが進んでいます。先月あった [Observability Day NA](https://events.linuxfoundation.org/kubecon-cloudnativecon-north-america/co-located-events/observability-day/#thank-you-for-attending) 冒頭の基調講演でも Austin から最近話題の [OBI](https://github.com/open-telemetry/opentelemetry-ebpf-instrumentation) などとともに 2026 年に期待されるアップデートとして紹介されています。
+https://colocatedeventsna2025.sched.com/event/28FN6/observability-project-updates
+
+アプリケーションにおける OTel の設定はご存知の通り[多くの設定値](https://opentelemetry.io/docs/specs/otel/configuration/sdk-environment-variables/)を環境変数を経由して行うことができます。より複雑な設定のニーズが高まることでこのような設定方式が開発されたと語られております。執筆時点においては Java のみがサポートされています。Java は参照実装としてやはり早いですが、Declarative Configuration は今年[スキーマのメジャーバージョンが1となった](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.1)ので、今後他の言語でも順次サポートされていくでしょう（言語ごとのステータスは[こちら](https://github.com/open-telemetry/opentelemetry-configuration/blob/main/schema-docs.md#language-support-status-)で整理されています）。
+
+ではどんな設定になるのか見てみましょう。
+
+Declarative Configuration では以下のようなコンフィグファイルを用意します（敢えて書きますが、OTel Collector のコンフィグファイルとは別物です）。
+
+```yaml:otel-config:yaml
+file_format: '1.0-rc.3'
+
+resource:
+  attributes:
+    - name: service.name
+      value: dice-roll-demo
+    - name: service.version
+      value: 1.0.0
+    - name: deployment.environment
+      value: production
+    - name: advent
+      value: calendar
+
+propagator:
+  composite:
+    - tracecontext:
+    - baggage:
+
+tracer_provider:
+  processors:
+    - batch:
+        exporter:
+          otlp_http:
+            endpoint: http://oteltui:4318/v1/traces
+```
+
+このコンフィグファイルを渡す形で、アプリケーションを起動します。Java の場合は以下のいつもの実行コマンドの引数を追加します。
+```sh
+java -javaagent:/app/opentelemetry-javaagent.jar \
+　-Dotel.experimental.config.file=/app/otel-config.yaml \
+　-jar app.jar
+```
+
+こうすることで、トレース情報に advent:calendar という属性付けがされます。上記の例では `resorce.attributes` で属性を付与していました。現状設定できる全ての設定値は[こちら](https://github.com/open-telemetry/opentelemetry-configuration/blob/main/examples/kitchen-sink.yaml)で見れるようです。
+
+[こちらのブログ](https://opentelemetry.io/blog/2025/declarative-config/)では、トレースのヘルスチェックエンドポイントのサンプリング設定を Declarative Configuration によりより柔軟に設定できるようになると記述されています（ネタ的に、`Why it took 5 years to ignore health check endpoints in tracing` というタイトルで環境変数設定でのサンプリング設定の難しさを表しています）。ルールベースのサンプリング設定は先週リリースされた [v1.0.0-rc.3](https://github.com/open-telemetry/opentelemetry-configuration/releases/tag/v1.0.0-rc.3) に [この PR](https://github.com/open-telemetry/opentelemetry-configuration/pull/410) で追加されており、以下のようなコンフィギュレーションになります。
+```sh
+...
+  sampler:
+    parent_based:
+      local_parent_sampled:
+        composite/development:
+          rule_based:
+            rules:
+              - attribute_values:
+                  key: http.route
+                  values:
+                    - /healthz
+                    - /livez
+                sampler:
+                  always_off:
+```
+これであれば 5　年もかからず簡単にセットアップして、不要なエンドポイントにおけるトレースサンプリングをスキップできそうです。もちろん、アプリケーションでサンプラーの設定を書いてもいいですが、言語によらない形でセットアップを宣言的に記述できる点は運用性向上や、横展開の際に便利かもしれませんね。
+
+今回は OTel SDK における Declarative Configuration について記しました。今回のデモで使った Java Agent の Declarative Configuration も [Experimental](https://opentelemetry.io/docs/zero-code/java/agent/declarative-configuration/#:~:text=Declarative%20configuration%20is%20experimental.) なステータスなのでご留意いただきつつ、ぜひ 2026 年の Declarative Configuration の進捗を追っていきましょう！
+
+最後に宣伝ですが、OTel Meetup が Powered by [TAKA_0411](https://x.com/TAKA_0411) により札幌開催されます！2/19 です！ぜひみなさんご参加していただきわいわいしましょう！
+https://opentelemetry.connpass.com/event/376362/
+
+明日は [@melonpass](https://qiita.com/melonpass) さんです！
